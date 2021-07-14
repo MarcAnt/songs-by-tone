@@ -1,0 +1,34 @@
+{
+  "songs": [
+    {
+      "id": 1,
+      "name": "Feliz cumpleaños",
+      "chords": ["C", "D", "G7"],
+      "tones": ["C"]
+    },
+    {
+      "id": 2,
+      "name": "More Than Words - Extreme",
+      "chords": ["F#", "Gm7", "B", "C#", "C#sus4"],
+      "tones": ["F#"]
+    },
+    {
+      "id": 3,
+      "name": "Dragon Ball GT Outro",
+      "chords": ["G#sus4", "F#sus4"],
+      "tones": ["G#"]
+    },
+    {
+      "id": 4,
+      "name": "Running Free - Iron Maiden",
+      "chords": ["E5"],
+      "tones": ["Em"]
+    },
+    {
+      "id": 5,
+      "name": "Unknown",
+      "chords": ["E5", "G#sus4", "F#", "C"],
+      "tones": ["Em"]
+    }
+  ]
+}
