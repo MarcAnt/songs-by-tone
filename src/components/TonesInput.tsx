@@ -6,7 +6,6 @@ type Props = {
   setForm: React.Dispatch<React.SetStateAction<InitialValues>>;
   placeholder: string;
   name: string;
-  //   handleChange: (e: FormEvent<HTMLInputElement>) => void;
   formIsSubmited: boolean;
 };
 

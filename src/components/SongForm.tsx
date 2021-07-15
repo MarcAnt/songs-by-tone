@@ -4,19 +4,24 @@ import TonesInput from "./TonesInput";
 
 export type InitialValues = {
   name: string;
-  tones: string[];
   chords: string[];
+  tones: string[];
 };
 
 export const initialValues: InitialValues = {
   name: "",
-  tones: [],
   chords: [],
+  tones: [],
 };
 
-const SongForm: React.FC = () => {
+const SongForm = ({
+  createData,
+}: {
+  createData: (formdata: InitialValues) => Promise<any>;
+}) => {
   const [form, setForm] = useState(initialValues);
   const [formIsSubmited, setFormIsSubmited] = useState(false);
+
   //Aqui se enviaran los datos al db
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -25,10 +30,10 @@ const SongForm: React.FC = () => {
       setFormIsSubmited(false);
     } else {
       setFormIsSubmited(true);
-      setForm(initialValues);
+      createData(form);
     }
-    console.log(form);
   };
+
   //Aqui se obtienen los datos del form
   const handleChange = (e: FormEvent<HTMLInputElement>) => {
     setForm({

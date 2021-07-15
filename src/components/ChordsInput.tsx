@@ -6,7 +6,6 @@ type Props = {
   setForm: React.Dispatch<React.SetStateAction<InitialValues>>;
   placeholder: string;
   name: string;
-  //   handleChange: (e: FormEvent<HTMLInputElement>) => void;
   formIsSubmited: boolean;
 };
 
@@ -23,7 +22,7 @@ const ChordsInput: React.FC<Props> = ({
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     let currentValue = e.currentTarget.value;
     let charsRegx =
-      /:|;|"|'|{|}|&|%|@|!|`|~|=|_|<|>|(\*+)|(\?+)|([acdefghijklnopqrtvwxyz])|([H-L])|([N-Z])|0/g;
+      /:|;|"|'|{|}|&|%|@|!|`|~|=|_|<|>|(\*+)|(\?+)|([acdefghijklnopqrtuvwxyz])|([H-L])|([N-Z])|0/g;
     let separadoresRegx = /,|-|\./g;
 
     if (charsRegx.test(currentValue)) return;
