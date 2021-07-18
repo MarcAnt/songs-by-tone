@@ -1,4 +1,5 @@
 import React, { useState, ChangeEvent, MouseEvent } from "react";
+import Alert from "./Alert/Alert";
 import { InitialValues } from "./SongForm";
 
 type Props = {
@@ -7,6 +8,11 @@ type Props = {
   placeholder: string;
   name: string;
   formIsSubmited: boolean;
+};
+
+const ALERT_MESSAGES = {
+  similarTone: "Agregar un tonalidad distinta",
+  maxTones: "Solo 3 tonalidades por cancion",
 };
 
 const TonesInput: React.FC<Props> = ({
@@ -18,6 +24,11 @@ const TonesInput: React.FC<Props> = ({
 }) => {
   const [tones, setTones] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
+  const [error, setError] = useState(false);
+
+  //Recordar crear un contexto para el maneja de las alertas
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertIsOpen, setAlertIsOpen] = useState(false);
 
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     let currentValue = e.currentTarget.value;
@@ -30,19 +41,29 @@ const TonesInput: React.FC<Props> = ({
     if (separadoresRegx.test(currentValue)) {
       if (tones.length < 3) {
         setInputValue("");
-        setTones([...tones, currentValue.slice(0, -1).trim()]);
 
-        setForm({
-          ...form,
-          tones: [...tones, currentValue.slice(0, -1).trim()],
-        });
+        let repeatTones = tones.includes(currentValue.slice(0, -1).trim());
+
+        if (repeatTones) {
+          setError(true);
+          setAlertMessage(ALERT_MESSAGES.similarTone);
+          setAlertIsOpen(false);
+        } else {
+          setError(false);
+          setTones([...tones, currentValue.slice(0, -1).trim()]);
+          setForm({
+            ...form,
+            tones: [...tones, currentValue.slice(0, -1).trim()],
+          });
+        }
 
         if (formIsSubmited) {
-          console.log(formIsSubmited);
           setTones([]);
+          setError(false);
         }
       } else {
-        alert("No puedes subir mas de 3 tonos por cancion");
+        setAlertMessage(ALERT_MESSAGES.maxTones);
+        setError(true);
       }
     } else {
       setInputValue(currentValue);
@@ -57,6 +78,7 @@ const TonesInput: React.FC<Props> = ({
       ...form,
       tones: [...newTones],
     });
+    setError(false);
   };
 
   return (
@@ -64,8 +86,8 @@ const TonesInput: React.FC<Props> = ({
       <span>
         {tones &&
           !formIsSubmited &&
-          tones.map((chord) => (
-            <button type="button" key={chord} onClick={deleteTones}>
+          tones.map((chord, idx) => (
+            <button type="button" key={idx} onClick={deleteTones}>
               {chord} <span>X</span>
             </button>
           ))}
@@ -77,6 +99,19 @@ const TonesInput: React.FC<Props> = ({
         placeholder={placeholder}
         onChange={handleInput}
       />
+
+      {error ? (
+        <Alert
+          width="300px"
+          height="100px"
+          position="bottom-center"
+          color="var(--generalColor)"
+          colorBg="var(--error)"
+          message={alertMessage}
+          setAlertIsOpen={setAlertIsOpen}
+          alertIsOpen={alertIsOpen}
+        />
+      ) : null}
     </>
   );
 };

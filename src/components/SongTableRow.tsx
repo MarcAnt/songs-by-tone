@@ -10,8 +10,10 @@ const SongTableRow = ({
   return (
     <tr>
       <td>{names}</td>
-      <td>{tones.map((tones) => tones)}</td>
-      <td>{chords.map((chord) => chord)}</td>
+      <td>{tones.join(", ")}</td>
+      <td>{chords.join(", ")}</td>
+      {/* <td>{tones.map((tones) => tones)}</td>
+      <td>{chords.map((chord) => chord)}</td> */}
     </tr>
   );
 };

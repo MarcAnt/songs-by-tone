@@ -1,16 +1,17 @@
 import React from "react";
-import "./App.css";
-import Footer from "./components/Footer";
-import Header from "./components/Header";
-import SongForm from "./components/SongForm";
-import SongSearch from "./components/SongSearch";
-import { createData } from "./helpers/Api";
+import { GlobalStyles } from "./GlobalStyles";
+
+import Footer from "./components/Footer/Footer";
+import Header from "./components/Header/Header";
+
+import Home from "./Pages/Home";
+
 const App: React.FC = () => {
   return (
     <div>
+      <GlobalStyles />
       <Header />
-      <SongForm createData={createData} />
-      <SongSearch />
+      <Home />
       <Footer />
     </div>
   );

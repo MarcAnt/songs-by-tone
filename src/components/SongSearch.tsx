@@ -112,7 +112,7 @@ const SongSearch: React.FC = () => {
         <input
           type="text"
           name="search"
-          placeholder="Buscar por tonos, acordes o cancion"
+          placeholder="Buscar por tonos o acordes"
           onChange={handleSearch}
         />
         <input type="submit" value="Buscar" />

@@ -64,8 +64,8 @@ const ChordsInput: React.FC<Props> = ({
       <span>
         {chords &&
           !formIsSubmited &&
-          chords.map((chord) => (
-            <button type="button" key={chord} onClick={deleteChords}>
+          chords.map((chord, idx) => (
+            <button type="button" key={idx} onClick={deleteChords}>
               {chord} <span>X</span>
             </button>
           ))}

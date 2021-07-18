@@ -1,4 +1,7 @@
-import React, { FormEvent, useState } from "react";
+import { FormEvent, useState } from "react";
+import { createData } from "../helpers/Api";
+import Alert from "./Alert/Alert";
+
 import ChordsInput from "./ChordsInput";
 import TonesInput from "./TonesInput";
 
@@ -14,11 +17,7 @@ export const initialValues: InitialValues = {
   tones: [],
 };
 
-const SongForm = ({
-  createData,
-}: {
-  createData: (formdata: InitialValues) => Promise<any>;
-}) => {
+const SongForm = () => {
   const [form, setForm] = useState(initialValues);
   const [formIsSubmited, setFormIsSubmited] = useState(false);
 
@@ -43,7 +42,7 @@ const SongForm = ({
   };
 
   return (
-    <div>
+    <div className="form-wrapper">
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -71,6 +70,17 @@ const SongForm = ({
         />
         <input type="submit" value="Crear" />
       </form>
+      {/* {formIsSubmited && (
+        // <Alert
+        //   width="300px"
+        //   height="100px"
+        //   message="Creado con Exito"
+        //   color="var(--generalColor)"
+        //   colorBg="var(--btnBgColor)"
+        //   position="bottom-center"
+
+        // />
+      )} */}
     </div>
   );
 };

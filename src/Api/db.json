@@ -80,6 +80,26 @@
         "Dm"
       ],
       "id": 7
+    },
+    {
+      "name": "Otro Tema",
+      "chords": [
+        "F"
+      ],
+      "tones": [
+        "E"
+      ],
+      "id": 8
+    },
+    {
+      "name": "Otro Tema",
+      "chords": [
+        "F"
+      ],
+      "tones": [
+        "E"
+      ],
+      "id": 9
     }
   ]
 }
