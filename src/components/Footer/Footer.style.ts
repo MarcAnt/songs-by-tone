@@ -1,8 +1,6 @@
 import styled from "styled-components";
 
 export const FooterWrapper = styled.footer`
-  /* position: absolute; */
-  /* bottom: 0; */
   text-align: center;
   width: 100%;
   padding: 1rem 4rem;
@@ -10,9 +8,10 @@ export const FooterWrapper = styled.footer`
   p {
     display: flex;
     justify-content: space-between;
+    align-items: center;
   }
 
   a {
-    font-weight: bold;
+    font-weight: bolder;
   }
 `;

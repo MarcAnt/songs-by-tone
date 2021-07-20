@@ -100,6 +100,17 @@
         "E"
       ],
       "id": 9
+    },
+    {
+      "name": "Otro Tema mas",
+      "chords": [
+        "AM7",
+        "Em7"
+      ],
+      "tones": [
+        "A"
+      ],
+      "id": 10
     }
   ]
 }

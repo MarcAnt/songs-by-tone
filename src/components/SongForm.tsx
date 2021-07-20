@@ -1,4 +1,5 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, useRef } from "react";
+import { ALERT_MESSAGES } from "../helpers/alertMessages";
 import { createData } from "../helpers/Api";
 import Alert from "./Alert/Alert";
 
@@ -20,16 +21,28 @@ export const initialValues: InitialValues = {
 const SongForm = () => {
   const [form, setForm] = useState(initialValues);
   const [formIsSubmited, setFormIsSubmited] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const [alertIsOpen, setAlertIsOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [error, setError] = useState(false);
 
   //Aqui se enviaran los datos al db
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     if (!form.name || !form.tones || !form.chords) {
-      alert("Inserta los datos");
+      inputRef.current!.focus();
+      setAlertIsOpen(false);
       setFormIsSubmited(false);
+      setAlertMessage(ALERT_MESSAGES.emptyForm);
+      setError(true);
     } else {
-      setFormIsSubmited(true);
+      setAlertIsOpen(false);
       createData(form);
+      setError(false);
+      setFormIsSubmited(true);
+      setAlertMessage(ALERT_MESSAGES.submitedForm);
     }
   };
 
@@ -50,8 +63,7 @@ const SongForm = () => {
           value={form.name}
           placeholder="Nombre del tema o cancion"
           onChange={handleChange}
-          required
-          title="Ingresa el nombre de cancion"
+          ref={inputRef}
         />
 
         <TonesInput
@@ -70,17 +82,31 @@ const SongForm = () => {
         />
         <input type="submit" value="Crear" />
       </form>
-      {/* {formIsSubmited && (
-        // <Alert
-        //   width="300px"
-        //   height="100px"
-        //   message="Creado con Exito"
-        //   color="var(--generalColor)"
-        //   colorBg="var(--btnBgColor)"
-        //   position="bottom-center"
+      {formIsSubmited && (
+        <Alert
+          width="300px"
+          height="100px"
+          message={alertMessage}
+          color="var(--generalColor)"
+          colorBg="var(--success)"
+          position="bottom-center"
+          setAlertIsOpen={setAlertIsOpen}
+          alertIsOpen={alertIsOpen}
+        />
+      )}
 
-        // />
-      )} */}
+      {error ? (
+        <Alert
+          width="300px"
+          height="100px"
+          message={alertMessage}
+          color="var(--generalColor)"
+          colorBg="var(--error)"
+          position="bottom-center"
+          setAlertIsOpen={setAlertIsOpen}
+          alertIsOpen={alertIsOpen}
+        />
+      ) : null}
     </div>
   );
 };

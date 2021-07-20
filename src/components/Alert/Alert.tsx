@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { AlertWrapper } from "./Alert.style";
 
 export type typeAlerts = {

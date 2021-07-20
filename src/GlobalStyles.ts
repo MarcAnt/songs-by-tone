@@ -35,6 +35,13 @@ export const GlobalStyles = createGlobalStyle`
         text-decoration: none;
     }
 
+    footer p {
+        a:nth-child(2){
+            color: black;
+            font-size: 1.5rem;
+        }
+    }
+
     nav {
         text-align: center;
         width: 100%;
@@ -65,7 +72,7 @@ export const GlobalStyles = createGlobalStyle`
         padding: 1rem;
         font-weight: bold;
         border: none;
-        border-radius: 16px;
+        border-radius: 4px;
         cursor: pointer;
         font-size: 1rem;
         text-align: center;
@@ -96,8 +103,8 @@ export const GlobalStyles = createGlobalStyle`
         margin: 1rem;
 
         font-family: "Nunito";
-        border-radius: 16px;
-        border: 0.5px solid #ddd;
+        border-radius: 4px;
+        border: 0.5px solid var(--btnBgColor);
         padding: 1rem;
         outline: none;
         transition: all .3s ease-in-out;
@@ -135,11 +142,19 @@ export const GlobalStyles = createGlobalStyle`
         span {
             width: 50%;
         }
+
+        .search-bar {
+            margin: 0 auto;
+            width: 50%;
+        
+            select, input[type="text"] {
+                width: 50%;
+            }
+        }
     }
 
     footer {
-        /* position: absolute;
-        bottom: 0; */
+        
         text-align: center;
         width: 100%;
         padding: 1rem 4rem;
@@ -179,17 +194,16 @@ export const GlobalStyles = createGlobalStyle`
         margin: 1.5rem auto;
         max-width: 1000px;
         min-width: 300px;
+        min-height: 45vh;
 
     }
 
 
     .card-item {
-        
-        /* height: 300px;
-        width: 300px; */
+   
         text-align: center;
-        background-color: var(--generalColorDark);
-        border-radius: 1rem;
+        background-color: #fff;
+        border-radius: 4px;
         border: 4px solid var(--generalColor);
         box-shadow: 1px 1px 5px grey;
         display: flex;
@@ -199,11 +213,14 @@ export const GlobalStyles = createGlobalStyle`
         color: var(--btnBgColor);
         transition: all .2s ease-in-out;
         cursor: pointer;
+        padding: .5rem 0;
+
         h4 {
             font-size: 1.1rem;
         }
-
+        
         p{
+            text-shadow: 1px 1px 2px #ddd;
             font-weight: bolder;
             font-size: 5rem;
             margin: 1rem auto;

@@ -1,6 +1,13 @@
-import React, { useEffect, useState, FormEvent, ChangeEvent } from "react";
+import React, {
+  useEffect,
+  useState,
+  FormEvent,
+  ChangeEvent,
+  useRef,
+} from "react";
 import { getData } from "../helpers/Api";
 import SongDetails from "./SongDetails";
+import { filterTones, filterChords } from "../helpers/songSearchFunctions";
 export type SongsType = {
   id: number;
   name: string;
@@ -14,6 +21,9 @@ const SongSearch: React.FC = () => {
   const [matches, setMatches] = useState<SongsType>([]);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState("");
+
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setLoading(true);
@@ -31,58 +41,22 @@ const SongSearch: React.FC = () => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!search) {
+      inputRef.current!.focus();
+      return;
+    }
 
-    if (!search) return;
-
-    const filterTones = () => {
-      let matches: number[] = [];
-      let songsList = songs.map((song) => {
-        return song;
-      });
-
-      songs
-        .map((song) => {
-          return song.tones.filter((tone) => {
-            return tone.includes(search);
-          });
-        })
-        .filter((el, idx) => {
-          return el.length > 0 && matches.push(idx);
-        });
-
-      return matches.map((match) => songsList[match]);
-    };
-
-    const filterChords = () => {
-      let matches: number[] = [];
-      let songsList = songs.map((song) => {
-        return song;
-      });
-
-      songs
-        .map((song) => {
-          return song.chords.filter((chords) => {
-            return chords.includes(search);
-          });
-        })
-        .filter((e, idx) => {
-          return e.length > 0 && matches.push(idx);
-        });
-
-      return matches.map((match) => songsList[match]);
-    };
+    const chordMatched = filterChords(songs, search);
+    const tonesMatched = filterTones(songs, search);
 
     const createMatches = () => {
-      let chordMatched = filterChords();
-      let tonesMatched = filterTones();
-
       let allMatches = [...chordMatched, ...tonesMatched];
       //Crate a unique array of elements
       const uniq = (a: SongsType) => {
         return Array.from(new Set(a));
       };
 
-      setMatches(uniq(allMatches));
+      setMatches((prev) => uniq(allMatches));
     };
 
     createMatches();
@@ -109,12 +83,20 @@ const SongSearch: React.FC = () => {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="search"
-          placeholder="Buscar por tonos o acordes"
-          onChange={handleSearch}
-        />
+        <div className="search-bar">
+          <select name="filter">
+            <option value="all">All</option>
+            <option value="chords">Acordes</option>
+            <option value="tonalidad">Tonalidad</option>
+          </select>
+          <input
+            type="text"
+            name="search"
+            placeholder="Buscar por tonos o acordes"
+            onChange={handleSearch}
+            ref={inputRef}
+          />
+        </div>
         <input type="submit" value="Buscar" />
       </form>
       {matches && !loading && <SongDetails matches={matches} />}

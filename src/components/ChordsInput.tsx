@@ -1,6 +1,9 @@
 import React, { useState, ChangeEvent, MouseEvent } from "react";
 import { InitialValues } from "./SongForm";
 
+import Alert from "./Alert/Alert";
+import { ALERT_MESSAGES } from "../helpers/alertMessages";
+
 type Props = {
   form: InitialValues;
   setForm: React.Dispatch<React.SetStateAction<InitialValues>>;
@@ -19,6 +22,10 @@ const ChordsInput: React.FC<Props> = ({
   const [chords, setChords] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
 
+  const [error, setError] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertIsOpen, setAlertIsOpen] = useState(false);
+
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     let currentValue = e.currentTarget.value;
     let charsRegx =
@@ -30,17 +37,28 @@ const ChordsInput: React.FC<Props> = ({
     if (separadoresRegx.test(currentValue)) {
       if (chords.length < 5) {
         setInputValue("");
-        setChords([...chords, currentValue.slice(0, -1).trim()]);
-        setForm({
-          ...form,
-          chords: [...chords, currentValue.slice(0, -1).trim()],
-        });
+
+        let repeatChords = chords.includes(currentValue.slice(0, -1).trim());
+
+        if (repeatChords) {
+          setError(true);
+          setAlertMessage(ALERT_MESSAGES.similarChord);
+          setAlertIsOpen(false);
+        } else {
+          setError(false);
+          setChords([...chords, currentValue.slice(0, -1).trim()]);
+          setForm({
+            ...form,
+            chords: [...chords, currentValue.slice(0, -1).trim()],
+          });
+        }
+
         if (formIsSubmited) {
-          console.log(formIsSubmited);
           setChords([]);
         }
       } else {
-        alert("No puedes subir mas de 5 acordes por cancion");
+        setError(true);
+        setAlertMessage(ALERT_MESSAGES.maxChords);
       }
     } else {
       setInputValue(currentValue);
@@ -77,6 +95,18 @@ const ChordsInput: React.FC<Props> = ({
         placeholder={placeholder}
         onChange={handleInput}
       />
+      {error ? (
+        <Alert
+          width="300px"
+          height="100px"
+          position="bottom-center"
+          color="var(--generalColor)"
+          colorBg="var(--error)"
+          message={alertMessage}
+          setAlertIsOpen={setAlertIsOpen}
+          alertIsOpen={alertIsOpen}
+        />
+      ) : null}
     </>
   );
 };

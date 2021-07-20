@@ -1,6 +1,7 @@
-const today = new Date();
-const YEAR = today.getFullYear();
-const Footer = () => {
+// const today = new Date();
+// const YEAR = today.getFullYear();
+import { FaGithub } from "react-icons/fa";
+const Footer: React.FC = () => {
   return (
     <footer>
       <p>
@@ -10,6 +11,13 @@ const Footer = () => {
           rel="noopener noreferrer"
         >
           @bymarcant
+        </a>
+        <a
+          href="https://github.com/MarcAnt/songs-by-tone"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <FaGithub />
         </a>
         <span>version: 1.0.0</span>
       </p>

@@ -1,4 +1,5 @@
 import React, { useState, ChangeEvent, MouseEvent } from "react";
+import { ALERT_MESSAGES } from "../helpers/alertMessages";
 import Alert from "./Alert/Alert";
 import { InitialValues } from "./SongForm";
 
@@ -10,11 +11,6 @@ type Props = {
   formIsSubmited: boolean;
 };
 
-const ALERT_MESSAGES = {
-  similarTone: "Agregar un tonalidad distinta",
-  maxTones: "Solo 3 tonalidades por cancion",
-};
-
 const TonesInput: React.FC<Props> = ({
   setForm,
   form,
@@ -24,9 +20,9 @@ const TonesInput: React.FC<Props> = ({
 }) => {
   const [tones, setTones] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
-  const [error, setError] = useState(false);
 
   //Recordar crear un contexto para el maneja de las alertas
+  const [error, setError] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertIsOpen, setAlertIsOpen] = useState(false);
 

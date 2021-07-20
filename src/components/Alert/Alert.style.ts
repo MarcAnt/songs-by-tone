@@ -18,10 +18,6 @@ const POSITION = {
   topRight: "top-left",
 };
 
-const setVisibility = (isOpen: boolean) => {
-  return isOpen ? "hidden" : "visible";
-};
-
 const setPosition = (position: string) => {
   switch (position) {
     case POSITION.bottomLeft:
@@ -113,8 +109,11 @@ export const AlertWrapper = styled.div<typeAlertWrapper>`
     color: ${(props) => (props.color ? props.color : "var(--generalColor)")};
     text-align: center;
     padding: 1rem;
+    width: 50%;
+    margin: 0 auto;
   }
 
+  display: ${(props) => (props.close ? "none" : "block")};
   visibility: ${(props) => (props.close ? "hidden" : "visible")};
 
   span {
