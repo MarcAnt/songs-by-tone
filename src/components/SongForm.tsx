@@ -1,4 +1,4 @@
-import { FormEvent, useState, useRef } from "react";
+import { FormEvent, useState, useRef, useEffect } from "react";
 import { ALERT_MESSAGES } from "../helpers/alertMessages";
 import { createData } from "../helpers/Api";
 import Alert from "./Alert/Alert";
@@ -31,9 +31,13 @@ const SongForm = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!form.name || !form.tones || !form.chords) {
+    if (form.name === "" || form.tones.length <= 0 || form.chords.length <= 0) {
       inputRef.current!.focus();
       setAlertIsOpen(false);
+      setForm({
+        ...form,
+        [e.currentTarget.name]: e.currentTarget.value,
+      });
       setFormIsSubmited(false);
       setAlertMessage(ALERT_MESSAGES.emptyForm);
       setError(true);
@@ -44,7 +48,13 @@ const SongForm = () => {
       setFormIsSubmited(true);
       setAlertMessage(ALERT_MESSAGES.submitedForm);
     }
+
+    e.currentTarget.reset();
   };
+
+  useEffect(() => {
+    if (formIsSubmited) setForm(initialValues);
+  }, [formIsSubmited]);
 
   //Aqui se obtienen los datos del form
   const handleChange = (e: FormEvent<HTMLInputElement>) => {
@@ -68,7 +78,7 @@ const SongForm = () => {
 
         <TonesInput
           name="tones"
-          placeholder="Separa por comas los tonos: C, E, Bb"
+          placeholder="Separa por comas las tonalidades: C, E, Bb"
           form={form}
           setForm={setForm}
           formIsSubmited={formIsSubmited}

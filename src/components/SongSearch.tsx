@@ -5,9 +5,15 @@ import React, {
   ChangeEvent,
   useRef,
 } from "react";
-import { getData } from "../helpers/Api";
-import SongDetails from "./SongDetails";
+//Libs
+import Select from "react-select";
+//Helpers
 import { filterTones, filterChords } from "../helpers/songSearchFunctions";
+import { getData } from "../helpers/Api";
+
+//Components
+import SongDetails from "./SongDetails";
+
 export type SongsType = {
   id: number;
   name: string;
@@ -15,15 +21,27 @@ export type SongsType = {
   tones: string[];
 }[];
 
+type MyOption = {
+  label: string;
+  value: string;
+};
+
+const options = [
+  { value: "all", label: "Tones/Chords" },
+  { value: "tones", label: "Tones" },
+  { value: "chords", label: "Chords" },
+];
+
 const SongSearch: React.FC = () => {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState<string>("");
   const [songs, setSongs] = useState<SongsType>([]);
   const [matches, setMatches] = useState<SongsType>([]);
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState("");
+  const [error, setError] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [filterBy, setFilterBy] = useState<string>("all");
 
   const inputRef = useRef<HTMLInputElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     setLoading(true);
@@ -39,6 +57,19 @@ const SongSearch: React.FC = () => {
       });
   }, []);
 
+  const handleSelectFilter = (e: MyOption | null) => {
+    setFilterBy(e!.value);
+  };
+
+  // useEffect(() => {
+  //   const filterList = {
+  //     chords: filterChords(songs, search),
+  //     tones: filterTones(songs, search),
+  //   };
+
+  //   console.log(filterList.tones);
+  // }, [songs, search]);
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!search) {
@@ -46,20 +77,31 @@ const SongSearch: React.FC = () => {
       return;
     }
 
-    const chordMatched = filterChords(songs, search);
     const tonesMatched = filterTones(songs, search);
+    const chordMatched = filterChords(songs, search);
 
-    const createMatches = () => {
-      let allMatches = [...chordMatched, ...tonesMatched];
-      //Crate a unique array of elements
+    const createMatches = (...filterMatches: SongsType[]) => {
+      const allMatches: SongsType = filterMatches.flatMap((filterMatch) => {
+        return filterMatch.map((filter) => {
+          return filter;
+        });
+      });
+
+      //Create a unique array of elements
       const uniq = (a: SongsType) => {
         return Array.from(new Set(a));
       };
 
-      setMatches((prev) => uniq(allMatches));
+      setMatches(uniq(allMatches));
     };
 
-    createMatches();
+    if (filterBy === "chords") {
+      createMatches(chordMatched);
+    } else if (filterBy === "tones") {
+      createMatches(tonesMatched);
+    } else {
+      createMatches(tonesMatched, chordMatched);
+    }
 
     e.currentTarget.reset();
   };
@@ -68,7 +110,7 @@ const SongSearch: React.FC = () => {
     let currentValue = e.currentTarget.value;
 
     let charsRegx =
-      /:|;|"|'|{|}|&|%|@|!|`|~|=|_|<|>|(\*+)|(\?+)|([acdefghijklnopqrtuvwxyz])|([H-L])|([N-Z])|0/g;
+      /:|;|"|'|{|}|&|%|@|!|`|~|=|_|<|>|(\*+)|(\?+)|([acdefghijklnopqrtvwxyz])|([H-L])|([N-Z])|([0])/g;
 
     if (charsRegx.test(currentValue)) {
       e.currentTarget.value = "";
@@ -82,18 +124,15 @@ const SongSearch: React.FC = () => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form ref={formRef} onSubmit={handleSubmit}>
         <div className="search-bar">
-          <select name="filter">
-            <option value="all">All</option>
-            <option value="chords">Acordes</option>
-            <option value="tonalidad">Tonalidad</option>
-          </select>
+          <Select options={options} onChange={(e) => handleSelectFilter(e)} />
           <input
             type="text"
             name="search"
-            placeholder="Buscar por tonos o acordes"
+            placeholder="Tonalidad o acordes"
             onChange={handleSearch}
+            value={search}
             ref={inputRef}
           />
         </div>

@@ -7,7 +7,7 @@ export const GlobalStyles = createGlobalStyle`
         --generalColor: #fffcf2;
         --generalColorDark: #f6f4ec;
         --btnBgColor: #663399;
-        --btnBorder: #fdfdfdc7;
+        --btnBorder:  #66339980;
         --error: #f21d2b;
         --success: #1DF27A;
     }
@@ -96,6 +96,14 @@ export const GlobalStyles = createGlobalStyle`
         }
     }
 
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover, 
+    input:-webkit-autofill:focus, 
+    input:-webkit-autofill:active
+    {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+    }
+
 
     
     input[type="text"],input[type="search"] {
@@ -121,10 +129,16 @@ export const GlobalStyles = createGlobalStyle`
     } 
 
     button:focus, input[type="submit"]:focus {
-        border: 5px solid var(--btnBorder);
+        /* border: 5px solid var(--btnBorder); */
+        box-shadow: 0 0 0 5px var(--btnBorder);
+    }
+    button:active, input[type="submit"]:active {
+        /* border: 5px solid var(--btnBorder); */
+        background-color: var(--btnBorder);
     }
     button:hover, input[type="submit"]:hover {
-        border: 5px solid var(--btnBorder);
+        /* border: 5px solid var(--btnBorder); */
+        box-shadow: 0 0 0 5px var(--btnBorder);
     }
 
     .form-wrapper {
@@ -133,7 +147,7 @@ export const GlobalStyles = createGlobalStyle`
 
     form {
         margin: 1.5rem auto auto;
-        width: 100%;
+        width: 70%;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -144,11 +158,29 @@ export const GlobalStyles = createGlobalStyle`
         }
 
         .search-bar {
-            margin: 0 auto;
+            
             width: 50%;
-        
-            select, input[type="text"] {
-                width: 50%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 2rem 0;
+            border: 0.5px solid var(--btnBgColor);
+            border-radius: 4px;
+            background-color: white;
+            div[class^=" css"] {
+                flex: 30%;
+                box-shadow: none;
+            }
+           
+            
+            input[type="text"] {
+                flex: 50%;
+                margin: 0;
+
+            }
+
+            div, input[type="text"] {
+                border: none;
             }
         }
     }
@@ -191,10 +223,10 @@ export const GlobalStyles = createGlobalStyle`
         align-content: center;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         gap: 1rem;
-        margin: 1.5rem auto;
+        margin: 1.5rem auto 0 auto;
         max-width: 1000px;
         min-width: 300px;
-        min-height: 45vh;
+        min-height: 40vh;
 
     }
 
@@ -240,6 +272,8 @@ export const GlobalStyles = createGlobalStyle`
         .card-grid {
             margin: 1.5rem;
         }
+
+        form {width: 100%}
     }
 
     @media (max-width: 379px) {

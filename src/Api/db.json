@@ -61,9 +61,10 @@
       ]
     },
     {
-      "name": "Otro Tema",
+      "name": "Iron Maiden - The Number of the beast",
       "chords": [
-        "F"
+        "Em",
+        "Dm"
       ],
       "tones": [
         "E"
@@ -71,46 +72,28 @@
       "id": 6
     },
     {
-      "name": "Iron Maiden - The Number of the beast",
+      "name": "Otro Tema",
       "chords": [
-        "Dm",
-        "Em"
+        "Bm7",
+        "Bm6",
+        "Bbm6#5"
       ],
       "tones": [
-        "Dm"
+        "B"
       ],
       "id": 7
     },
     {
-      "name": "Otro Tema",
+      "name": "Otro Tema N",
       "chords": [
-        "F"
+        "Em",
+        "C5",
+        "G5"
       ],
       "tones": [
-        "E"
+        "Em"
       ],
       "id": 8
-    },
-    {
-      "name": "Otro Tema",
-      "chords": [
-        "F"
-      ],
-      "tones": [
-        "E"
-      ],
-      "id": 9
-    },
-    {
-      "name": "Otro Tema mas",
-      "chords": [
-        "AM7",
-        "Em7"
-      ],
-      "tones": [
-        "A"
-      ],
-      "id": 10
     }
   ]
 }

@@ -4,6 +4,6 @@ export const ALERT_MESSAGES = {
   maxTones: "Solo 3 tonalidades por cancion",
   maxChords: "Solo 5 acordes por cancion",
   songCreated: "Cancion creada satisfactoriamente",
-  emptyForm: "Por favor, ingresa para crear una cancion",
+  emptyForm: "Por favor, rellena los campos para crear un registro",
   submitedForm: "Cancion creada con exito",
 };
