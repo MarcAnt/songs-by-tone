@@ -1,22 +1,21 @@
 import React, {
   useEffect,
   useState,
+  useRef,
+  useMemo,
   FormEvent,
   ChangeEvent,
-  useRef,
 } from "react";
 
 //Libs
 import Select from "react-select";
-
+import { FaSearch } from "react-icons/fa";
 //Helpers
 import {
   filterTones,
   filterChords,
   createMatches,
-  filterUniqTones,
-  createUniqs,
-  filterUniqChords,
+  filterResultBar,
 } from "../helpers/songSearchFunctions";
 import { getData } from "../helpers/Api";
 
@@ -49,13 +48,18 @@ const options = [
 const SongSearch: React.FC = () => {
   const [search, setSearch] = useState<string>("");
   const [songs, setSongs] = useState<SongsType>([]);
-  const [matches, setMatches] = useState<SongsType>([]);
+
   const [, setError] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
+
   const [filterBy, setFilterBy] = useState<string>("all");
+  const [matches, setMatches] = useState<SongsType>([]);
+  const [inputResults, setInputResults] = useState<string[]>([]);
+  const [formIsSubmited, setFormIsSubmited] = useState<boolean>(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
+  const searchResultsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setLoading(true);
@@ -75,41 +79,45 @@ const SongSearch: React.FC = () => {
     setFilterBy(e!.value);
   };
 
-  const tonesMatched = filterTones(songs, search);
-  const chordMatched = filterChords(songs, search);
+  const tonesMatched = useMemo(
+    () => filterTones(songs, search),
+    [songs, search]
+  );
+  const chordMatched = useMemo(
+    () => filterChords(songs, search),
+    [songs, search]
+  );
 
+  const filterList: filterList = {
+    chords: () => createMatches(setMatches, chordMatched),
+    tones: () => createMatches(setMatches, tonesMatched),
+    all: () => createMatches(setMatches, tonesMatched, chordMatched),
+  };
   const filter_default = "all";
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!search) {
+      setFormIsSubmited(false);
       inputRef.current!.focus();
       return;
     }
-    const filterList: filterList = {
-      chords: () => createMatches(setMatches, chordMatched),
-      tones: () => createMatches(setMatches, tonesMatched),
-      all: () => createMatches(setMatches, tonesMatched, chordMatched),
-    };
-
+    setFormIsSubmited(true);
     e.currentTarget.reset();
-
     return filterList[filterBy] ? filterList[filterBy]() : filter_default;
   };
 
   useEffect(() => {
+    let results: string[];
     if (search) {
-      const results = createUniqs([
-        ...filterUniqTones(tonesMatched, search),
-        ...filterUniqChords(chordMatched, search),
-      ]);
-
-      console.log(results);
+      results = filterResultBar(chordMatched, tonesMatched, search)[filterBy];
+      results && setInputResults(results);
     }
-  }, [search, tonesMatched, chordMatched]);
+  }, [search, chordMatched, tonesMatched, filterBy]);
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     let currentValue = e.currentTarget.value;
+    setFormIsSubmited(false);
 
     let charsRegx =
       /:|;|"|'|{|}|&|%|@|!|`|~|=|_|<|>|(\*+)|(\?+)|([acdefghijklnopqrtvwxyz])|([H-L])|([N-Z])|([0])/g;
@@ -124,22 +132,51 @@ const SongSearch: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    document.addEventListener("click", (e) => {
+      e.target !== searchResultsRef.current ?? inputRef.current
+        ? setFormIsSubmited(true)
+        : setFormIsSubmited(false);
+    });
+    // return document.removeEventListener("click", {});
+  }, []);
+
+  const handleSearchBar = (inputResult: string) => {
+    setSearch(inputResult);
+    setFormIsSubmited(true);
+  };
+
   return (
     <div>
       <form ref={formRef} onSubmit={handleSubmit}>
         <div className="search-bar">
-          <Select options={options} onChange={(e) => handleSelectFilter(e)} />
-          <input
-            type="text"
-            name="search"
-            placeholder="Tonalidad o acordes"
-            onChange={handleSearch}
-            value={search}
-            ref={inputRef}
-          />
+          <div className="search-bar-content">
+            <Select options={options} onChange={(e) => handleSelectFilter(e)} />
+            <input
+              type="text"
+              name="search"
+              placeholder="Tonalidad o acordes"
+              onChange={handleSearch}
+              value={search}
+              ref={inputRef}
+              autoComplete="off"
+            />
+          </div>
+          <button type="submit">
+            <FaSearch />
+          </button>
         </div>
-        <div>{}</div>
-        <input type="submit" value="Buscar" />
+        <div className="search-matches-input" ref={searchResultsRef}>
+          {search
+            ? formIsSubmited
+              ? null
+              : inputResults.map((inputResult, idx) => (
+                  <li key={idx} onClick={() => handleSearchBar(inputResult)}>
+                    {inputResult}
+                  </li>
+                ))
+            : null}
+        </div>
       </form>
       {matches && !loading && <SongDetails matches={matches} />}
     </div>

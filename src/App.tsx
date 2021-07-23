@@ -8,12 +8,14 @@ import Home from "./Pages/Home";
 
 const App: React.FC = () => {
   return (
-    <div>
+    <>
       <GlobalStyles />
-      <Header />
-      <Home />
-      <Footer />
-    </div>
+      <div>
+        <Header />
+        <Home />
+        <Footer />
+      </div>
+    </>
   );
 };
 

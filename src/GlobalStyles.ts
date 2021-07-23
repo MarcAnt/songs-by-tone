@@ -72,7 +72,6 @@ export const GlobalStyles = createGlobalStyle`
         padding: 1rem;
         font-weight: bold;
         border: none;
-        border-radius: 4px;
         cursor: pointer;
         font-size: 1rem;
         text-align: center;
@@ -146,43 +145,97 @@ export const GlobalStyles = createGlobalStyle`
     }
 
     form {
-        margin: 1.5rem auto auto;
-        width: 70%;
+        margin: 4rem auto auto;
+        width: 50%;
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
-
+        position: relative;
         span {
             width: 50%;
         }
 
         .search-bar {
             
-            width: 50%;
+
+            .search-bar-content {
+
+                border-top-left-radius: 4px;
+                border-bottom-left-radius: 4px;
+                border: 0.5px solid var(--btnBgColor);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 80%;
+            }
+            position: relative;
+            width: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin: 2rem 0;
-            border: 0.5px solid var(--btnBgColor);
-            border-radius: 4px;
+            margin-top: 2rem;
             background-color: white;
+
+            button[type="submit"] {
+                width: 20%;
+                border-top-right-radius: 4px;
+                border-bottom-right-radius: 4px;
+            }
+
             div[class^=" css"] {
                 flex: 30%;
                 box-shadow: none;
             }
            
-            
             input[type="text"] {
                 flex: 50%;
                 margin: 0;
-
             }
 
             div, input[type="text"] {
                 border: none;
             }
         }
+    }
+
+    .search-matches-input {
+        border-radius: 4px;
+        background-color: whitesmoke;
+        max-height: 200px;
+        width: 100%;
+        overflow-y: scroll;
+        opacity: 0.8;
+        position: absolute;
+        /* z-index: 2; */
+        top: 5.4rem;
+
+       /* width */
+        ::-webkit-scrollbar {
+        width: 10px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+        background: #f1f1f1; 
+        }
+        
+        ::-webkit-scrollbar-thumb {
+        background-color: var(--btnBgColor); 
+        border-radius: 4px;
+        }
+
+        li {
+            list-style: none;
+            padding: 1rem;
+            cursor: pointer;
+            font-weight: bolder;
+        }
+
+        li:hover {
+            background-color: var(--btnBorder);
+        }
+
     }
 
     footer {
@@ -226,7 +279,7 @@ export const GlobalStyles = createGlobalStyle`
         margin: 1.5rem auto 0 auto;
         max-width: 1000px;
         min-width: 300px;
-        min-height: 40vh;
+        min-height: 50vh;
 
     }
 
@@ -268,12 +321,15 @@ export const GlobalStyles = createGlobalStyle`
         transform: translateY(.25rem);
     }
 
+
+    
+
     @media (max-width: 1024px) {
         .card-grid {
             margin: 1.5rem;
         }
 
-        form {width: 100%}
+        /* form {width: 100%} */
     }
 
     @media (max-width: 379px) {

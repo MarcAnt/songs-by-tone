@@ -1,5 +1,5 @@
 import { SongsType } from "../components/SongSearch";
-//Filter all chords
+//Filter all data by chords
 export const filterChords = (songs: SongsType, search: string) => {
   let matches: number[] = [];
   let songsList = songs.map((song) => {
@@ -19,7 +19,7 @@ export const filterChords = (songs: SongsType, search: string) => {
   return matches.map((match) => songsList[match]);
 };
 
-//Filter all tones
+//Filter all data by tones
 export const filterTones = (songs: SongsType, search: string) => {
   let matches: number[] = [];
   let songsList = songs.map((song) => {
@@ -50,7 +50,6 @@ export const createMatches = (
     });
   });
 
-  //Create a unique array of elements
   const uniq = (a: SongsType) => {
     return Array.from(new Set(a));
   };
@@ -91,4 +90,23 @@ export const filterUniqChords = (results: SongsType, search: string) => {
     })
     .flatMap((e) => e.map((e) => filterResults.push(e)));
   return Array.from(new Set(filterResults));
+};
+
+// Filter by type on search bar
+type filterList = {
+  [prop: string]: string[];
+};
+export const filterResultBar = (
+  chordMatched: SongsType,
+  tonesMatched: SongsType,
+  search: string
+): filterList => {
+  return {
+    chords: filterUniqChords(chordMatched, search),
+    tones: filterUniqTones(tonesMatched, search),
+    all: createUniqs([
+      ...filterUniqTones(tonesMatched, search),
+      ...filterUniqChords(chordMatched, search),
+    ]),
+  };
 };
