@@ -94,6 +94,63 @@
         "Em"
       ],
       "id": 8
+    },
+    {
+      "name": "Con dos tones",
+      "chords": [
+        "D",
+        "Bm",
+        "Em",
+        "F"
+      ],
+      "tones": [
+        "D",
+        "Bm"
+      ],
+      "id": 9
+    },
+    {
+      "name": "Otro tema con tres tonalidades",
+      "chords": [
+        "AM7",
+        "CM7",
+        "EM7",
+        "FM7",
+        "Fm"
+      ],
+      "tones": [
+        "A",
+        "C",
+        "E"
+      ],
+      "id": 10
+    },
+    {
+      "name": "Otra canción con el nombre mas largo, con todos las tonalidades y todos los acordes ",
+      "chords": [
+        "A"
+      ],
+      "tones": [
+        "A",
+        "C#",
+        "Gb"
+      ],
+      "id": 11
+    },
+    {
+      "name": "Esto es lo mas largo que puedo colocar de nombre ",
+      "chords": [
+        "Am",
+        "C",
+        "Dm",
+        "Em",
+        "G7"
+      ],
+      "tones": [
+        "Am",
+        "C"
+      ],
+      "id": 12
     }
   ]
 }

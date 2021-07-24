@@ -1,9 +1,10 @@
 // const today = new Date();
 // const YEAR = today.getFullYear();
 import { FaGithub } from "react-icons/fa";
+import { FooterWrapper } from "./Footer.style";
 const Footer: React.FC = () => {
   return (
-    <footer>
+    <FooterWrapper>
       <p>
         <a
           href="https://twitter.com/bymarcant"
@@ -21,7 +22,7 @@ const Footer: React.FC = () => {
         </a>
         <span>version: 1.0.0</span>
       </p>
-    </footer>
+    </FooterWrapper>
   );
 };
 export default Footer;

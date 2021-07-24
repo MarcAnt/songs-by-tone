@@ -147,7 +147,11 @@ const SongSearch: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="song-search-container">
+      <section>
+        <p>Un simple buscador por tonalidad o acordes de canciones.</p>
+      </section>
+
       <form ref={formRef} onSubmit={handleSubmit}>
         <div className="search-bar">
           <div className="search-bar-content">

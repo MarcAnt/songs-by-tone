@@ -1,9 +1,14 @@
-import React from "react";
 import { HeaderWrapper } from "./Header.style";
+import { Link } from "react-router-dom";
 const Header = () => {
   return (
     <HeaderWrapper>
-      <h1>SongsByTones</h1>
+      <nav>
+        <Link to="/">SongsByTone</Link>
+        <Link className="create" to="/create">
+          Crear Canción
+        </Link>
+      </nav>
     </HeaderWrapper>
   );
 };

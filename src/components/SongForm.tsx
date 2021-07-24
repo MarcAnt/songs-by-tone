@@ -66,6 +66,12 @@ const SongForm = () => {
 
   return (
     <div className="form-wrapper">
+      <section>
+        <p>
+          Puedes crear las canciones segun su tonalidad. Solo recuerda separar
+          por comas (<span>,</span>) cada tono o acorde para poder agregarlos.
+        </p>
+      </section>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -74,6 +80,7 @@ const SongForm = () => {
           placeholder="Nombre del tema o cancion"
           onChange={handleChange}
           ref={inputRef}
+          maxLength={50}
         />
 
         <TonesInput

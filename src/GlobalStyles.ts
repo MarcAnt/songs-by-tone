@@ -14,7 +14,7 @@ export const GlobalStyles = createGlobalStyle`
 
     html {
         font-size: 16px;
-        font-family: 'Nunito', sans-serif;
+        font-family: 'Rubik', sans-serif;
     }
 
     html, * {
@@ -33,45 +33,16 @@ export const GlobalStyles = createGlobalStyle`
     a {
         color: var(--btnBgColor);
         text-decoration: none;
-    }
-
-    footer p {
-        a:nth-child(2){
-            color: black;
-            font-size: 1.5rem;
-        }
-    }
-
-    nav {
-        text-align: center;
-        width: 100%;
-        display: flex;
-        justify-content: space-evenly;
-        align-items: center;
-        font-size: 1.2rem;
-        a.create {
-            font-weight: bolder;
-            background-color: var(--bgColor);
-            border: 1px solid var(--btnBgColor);
-            border-radius: 4px;
-            padding: .5rem;
-            transition: all .3s ease-in-out;
-        }
-
-        a.create:hover {
-            background-color: var(--btnBgColor);
-            border: 1px solid var(--bgColor);
-            color: var(--generalColor);
-        }
-    }
+    }   
 
     button, input[type="submit"] {
         background-color: var(--btnBgColor);
         color: var(--generalColor);
-        font-family: "Nunito";
+        font-family: "Rubik";
         padding: 1rem;
         font-weight: bold;
         border: none;
+        border-radius: 4px;
         cursor: pointer;
         font-size: 1rem;
         text-align: center;
@@ -108,8 +79,7 @@ export const GlobalStyles = createGlobalStyle`
     input[type="text"],input[type="search"] {
         width: 50%;
         margin: 1rem;
-
-        font-family: "Nunito";
+        font-family: "Rubik";
         border-radius: 4px;
         border: 0.5px solid var(--btnBgColor);
         padding: 1rem;
@@ -118,7 +88,7 @@ export const GlobalStyles = createGlobalStyle`
     }
 
     input[type="text"]:focus,input[type="search"]:focus {
-        border: 2px solid var(--btnBgColor);
+        border: 1px solid var(--btnBgColor);
     }
 
 
@@ -140,12 +110,57 @@ export const GlobalStyles = createGlobalStyle`
         box-shadow: 0 0 0 5px var(--btnBorder);
     }
 
+    .site-wrapper {
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
     .form-wrapper {
-        height: 70vh;
+        height: 80vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        section {
+            flex: 50%;
+            
+            p {
+                padding-left: 2rem;
+                font-size: 2.5rem;
+                font-weight: bolder;
+                width: 80%;
+
+                span {
+                    color: var(--btnBgColor);
+                }
+            }
+
+        }
+        form {
+            flex: 50%;
+            margin: 0;
+        }
+    }
+
+    .song-search-container {
+
+        height: 80vh;
+
+        section p {
+            text-align: center;
+            font-weight: bolder;
+            font-size: 2rem;
+            padding: 1rem 2rem;
+            margin: 0 auto;
+            width: 60%;
+        }
     }
 
     form {
-        margin: 4rem auto auto;
+        margin: 0 auto;
         width: 50%;
         display: flex;
         justify-content: center;
@@ -238,22 +253,6 @@ export const GlobalStyles = createGlobalStyle`
 
     }
 
-    footer {
-        
-        text-align: center;
-        width: 100%;
-        padding: 1rem 4rem;
-
-        p {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        a {
-            font-weight: bold;
-        }
-    }
-
     table {
         width: 90%;
         margin: 2rem auto;
@@ -274,12 +273,14 @@ export const GlobalStyles = createGlobalStyle`
     .card-grid {
         display: grid;
         align-content: center;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
         gap: 1rem;
         margin: 1.5rem auto 0 auto;
         max-width: 1000px;
         min-width: 300px;
-        min-height: 50vh;
+        /* min-height: 43vh; */
+        height: 44vh;
+        align-content: flex-start;
 
     }
 
@@ -290,28 +291,37 @@ export const GlobalStyles = createGlobalStyle`
         background-color: #fff;
         border-radius: 4px;
         border: 4px solid var(--generalColor);
-        box-shadow: 1px 1px 5px grey;
+        box-shadow: 1px 1px 2.5px grey;
         display: flex;
         justify-content: space-evenly;
         align-items: center;
-        flex-direction: column;
         color: var(--btnBgColor);
         transition: all .2s ease-in-out;
         cursor: pointer;
-        padding: .5rem 0;
+        
+        div {
+            flex: 70%;
+            text-align: left;
+        }
 
         h4 {
-            font-size: 1.1rem;
+            font-size: .8rem;
         }
         
         p{
             text-shadow: 1px 1px 2px #ddd;
             font-weight: bolder;
-            font-size: 5rem;
-            margin: 1rem auto;
+            font-size: 2.5rem;
+            /* margin: 1rem auto; */
+            flex: 30%;
+            text-align: left;
         }
 
         span {
+            font-size: 1rem;
+        }
+
+        .one-more-tone {
             font-size: 1.3rem;
         }
 

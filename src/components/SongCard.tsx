@@ -9,9 +9,13 @@ const SongCard = ({
 }) => {
   return (
     <div className="card-item">
-      <h4>{names}</h4>
-      <p>{tones.join(", ")}</p>
-      <span>{chords.join(", ")}</span>
+      <p className={tones.length > 1 ? "one-more-tone " : ""}>
+        {tones.join(", ")}
+      </p>
+      <div>
+        <h4>{names}</h4>
+        <span>{chords.join(", ")}</span>
+      </div>
     </div>
   );
 };
