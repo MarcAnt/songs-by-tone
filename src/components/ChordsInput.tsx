@@ -29,7 +29,7 @@ const ChordsInput: React.FC<Props> = ({
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     let currentValue = e.currentTarget.value;
     let charsRegx =
-      /:|;|"|'|{|}|&|%|@|!|`|~|=|_|<|>|(\*+)|(\?+)|([acdefghijklnopqrtuvwxyz])|([H-L])|([N-Z])|0/g;
+      /:|;|"|'|{|}|&|%|@|!|`|~|=|_|<|>|(\*+)|(\?+)|(\^+)|(\[+)|(\]+)|(\\+)|(\|+)|(\(+)|(\)+)|([acdefghijklnopqrtuvwxyz])|([H-L])|([N-Z])|0|\s/g;
     let separadoresRegx = /,|-|\./g;
 
     if (charsRegx.test(currentValue)) return;
@@ -80,6 +80,7 @@ const ChordsInput: React.FC<Props> = ({
   return (
     <>
       <span>
+        Acordes:
         {chords &&
           !formIsSubmited &&
           chords.map((chord, idx) => (

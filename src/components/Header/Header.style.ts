@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const HeaderWrapper = styled.header`
   text-align: center;
   width: 100%;
+  max-width: 1920px;
   padding: 1rem 2rem;
 
   p {

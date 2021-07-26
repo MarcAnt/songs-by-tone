@@ -30,6 +30,12 @@ export const GlobalStyles = createGlobalStyle`
         overflow-x: hidden;
     }
 
+    .page {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        }
+
     a {
         color: var(--btnBgColor);
         text-decoration: none;
@@ -42,7 +48,6 @@ export const GlobalStyles = createGlobalStyle`
         padding: 1rem;
         font-weight: bold;
         border: none;
-        border-radius: 4px;
         cursor: pointer;
         font-size: 1rem;
         text-align: center;
@@ -99,7 +104,7 @@ export const GlobalStyles = createGlobalStyle`
 
     button:focus, input[type="submit"]:focus {
         /* border: 5px solid var(--btnBorder); */
-        box-shadow: 0 0 0 5px var(--btnBorder);
+        box-shadow: 0 0 0 2px var(--btnBorder);
     }
     button:active, input[type="submit"]:active {
         /* border: 5px solid var(--btnBorder); */
@@ -107,15 +112,18 @@ export const GlobalStyles = createGlobalStyle`
     }
     button:hover, input[type="submit"]:hover {
         /* border: 5px solid var(--btnBorder); */
-        box-shadow: 0 0 0 5px var(--btnBorder);
+        box-shadow: 0 0 0 2px var(--btnBorder);
     }
 
     .site-wrapper {
+    
         display: flex;
-        justify-content: center;
-        align-content: center;
-        flex-direction: column;
         min-height: 100vh;
+        flex-direction: column;
+    }
+
+    main {
+        flex-grow: 1;
     }
 
     .form-wrapper {
@@ -126,7 +134,6 @@ export const GlobalStyles = createGlobalStyle`
 
         section {
             flex: 50%;
-            
             p {
                 padding-left: 2rem;
                 font-size: 2.5rem;
@@ -147,8 +154,10 @@ export const GlobalStyles = createGlobalStyle`
 
     .song-search-container {
 
-        height: 80vh;
-
+        /* height: 80vh; */
+        section {
+            padding-top: 2rem;
+        }
         section p {
             text-align: center;
             font-weight: bolder;
@@ -178,7 +187,7 @@ export const GlobalStyles = createGlobalStyle`
 
                 border-top-left-radius: 4px;
                 border-bottom-left-radius: 4px;
-                border: 0.5px solid var(--btnBgColor);
+                border: 2px solid var(--btnBgColor);
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -279,7 +288,7 @@ export const GlobalStyles = createGlobalStyle`
         max-width: 1000px;
         min-width: 300px;
         /* min-height: 43vh; */
-        height: 44vh;
+        /* height: 44vh; */
         align-content: flex-start;
 
     }
@@ -339,8 +348,68 @@ export const GlobalStyles = createGlobalStyle`
             margin: 1.5rem;
         }
 
-        /* form {width: 100%} */
+        .form-wrapper{
+            section p {
+                font-size: 2rem;
+            }
+
+            form {
+                span,input[type="text"] {
+                    width: 80%;
+                }
+
+                span button[type="button"]{
+                    padding: 0 .2rem;
+                    font-size: .95rem;
+                } 
+
+                
+            }
+        }
     }
+
+  
+
+
+    @media (max-width: 768px) {
+        .form-wrapper{
+            section p {
+                font-size: 1.5rem;
+            }
+
+            form {
+                span,input[type="text"] {
+                    width: 90%;
+                }
+                
+            }
+        }
+    }
+
+
+    @media (max-width: 480px) {
+        .form-wrapper{
+            flex-direction: column;
+
+            section p {
+                font-size: 1rem;
+                text-align: center;
+                padding: 0;
+                margin: 0 auto;
+            }
+            section {
+                padding-top: 2rem;
+                flex:auto;
+            }
+            
+            form {
+                flex: 100%;
+                width: 80%;
+            }
+
+        }
+    }
+
 
     @media (max-width: 379px) {
         button, input[type="submit"],input[type="text"] {

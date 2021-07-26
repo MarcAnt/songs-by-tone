@@ -151,6 +151,30 @@
         "C"
       ],
       "id": 12
+    },
+    {
+      "name": "Otro Tema",
+      "chords": [
+        "Fm",
+        "A7",
+        "Dm",
+        "Am6"
+      ],
+      "tones": [
+        "E",
+        "Em"
+      ],
+      "id": 13
+    },
+    {
+      "name": "Con un tono y un acorde",
+      "chords": [
+        "Gm6"
+      ],
+      "tones": [
+        "E"
+      ],
+      "id": 14
     }
   ]
 }

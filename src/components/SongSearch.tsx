@@ -120,7 +120,7 @@ const SongSearch: React.FC = () => {
     setFormIsSubmited(false);
 
     let charsRegx =
-      /:|;|"|'|{|}|&|%|@|!|`|~|=|_|<|>|(\*+)|(\?+)|([acdefghijklnopqrtvwxyz])|([H-L])|([N-Z])|([0])/g;
+      /:|;|"|'|{|}|&|%|@|!|`|~|=|_|<|>|(\*+)|(\?+)|(\$+)|(\*+)|(\?+)|(\^+)|(\[+)|(\]+)|(\\+)|(\|+)|(\(+)|(\)+)([acdefghijklnopqrtvwxyz])|([H-L])|([N-Z])|([0])/g;
 
     if (charsRegx.test(currentValue)) {
       e.currentTarget.value = "";
@@ -133,13 +133,51 @@ const SongSearch: React.FC = () => {
   };
 
   useEffect(() => {
+    //Handling close the search matches bar
     document.addEventListener("click", (e) => {
       e.target !== searchResultsRef.current ?? inputRef.current
         ? setFormIsSubmited(true)
         : setFormIsSubmited(false);
     });
-    // return document.removeEventListener("click", {});
   }, []);
+
+  React.useEffect(() => {
+    let count = 0;
+    let parentHeight = searchResultsRef.current?.getBoundingClientRect().height;
+    let y =
+      searchResultsRef.current?.children[0]?.getBoundingClientRect().height;
+
+    if (search) {
+      setTimeout(() => {
+        y =
+          searchResultsRef.current?.children[0]?.getBoundingClientRect().height;
+        parentHeight = searchResultsRef.current?.getBoundingClientRect().height;
+      }, 50);
+
+      // console.log(count, parentHeight, y);
+      searchResultsRef.current?.addEventListener("scroll", () => {
+        count = searchResultsRef.current!.scrollTop;
+      });
+
+      document.addEventListener("keydown", (e) => {
+        searchResultsRef.current?.focus();
+
+        if (e.key === "ArrowDown") {
+          if (y! - parentHeight! <= count) return;
+
+          searchResultsRef.current?.scroll(0, (count = count + 25));
+        }
+
+        if (e.key === "ArrowUp") {
+          if (count <= 0) {
+            count = 25;
+          }
+
+          searchResultsRef.current?.scroll(0, (count = count - 25));
+        }
+      });
+    }
+  }, [search]);
 
   const handleSearchBar = (inputResult: string) => {
     setSearch(inputResult);
@@ -149,7 +187,7 @@ const SongSearch: React.FC = () => {
   return (
     <div className="song-search-container">
       <section>
-        <p>Un simple buscador por tonalidad o acordes de canciones.</p>
+        <p>Un simple buscador de canciones por tonalidad o acordes.</p>
       </section>
 
       <form ref={formRef} onSubmit={handleSubmit}>
@@ -171,15 +209,17 @@ const SongSearch: React.FC = () => {
           </button>
         </div>
         <div className="search-matches-input" ref={searchResultsRef}>
-          {search
-            ? formIsSubmited
-              ? null
-              : inputResults.map((inputResult, idx) => (
+          {search ? (
+            formIsSubmited ? null : (
+              <ul>
+                {inputResults.map((inputResult, idx) => (
                   <li key={idx} onClick={() => handleSearchBar(inputResult)}>
                     {inputResult}
                   </li>
-                ))
-            : null}
+                ))}
+              </ul>
+            )
+          ) : null}
         </div>
       </form>
       {matches && !loading && <SongDetails matches={matches} />}

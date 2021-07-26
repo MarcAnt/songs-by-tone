@@ -53,11 +53,24 @@ const SongForm = () => {
   };
 
   useEffect(() => {
+    //Clear the form after submitting
     if (formIsSubmited) setForm(initialValues);
   }, [formIsSubmited]);
 
   //Aqui se obtienen los datos del form
   const handleChange = (e: FormEvent<HTMLInputElement>) => {
+    if (e.currentTarget.name === "name") {
+      e.currentTarget.maxLength = 50;
+
+      if (e.currentTarget.value.length >= 50) {
+        setError(true);
+        setAlertMessage(ALERT_MESSAGES.maxLength);
+        return;
+      } else {
+        setError(false);
+      }
+    }
+
     setForm({
       ...form,
       [e.currentTarget.name]: e.currentTarget.value,
@@ -85,14 +98,14 @@ const SongForm = () => {
 
         <TonesInput
           name="tones"
-          placeholder="Separa por comas las tonalidades: C, E, Bb"
+          placeholder="C, E, Bb"
           form={form}
           setForm={setForm}
           formIsSubmited={formIsSubmited}
         />
         <ChordsInput
           name="chords"
-          placeholder="Separa por comas los acordes: C, A7, Gm6"
+          placeholder="C, A7, Gm6"
           form={form}
           setForm={setForm}
           formIsSubmited={formIsSubmited}

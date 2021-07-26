@@ -28,8 +28,10 @@ const TonesInput: React.FC<Props> = ({
 
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     let currentValue = e.currentTarget.value;
+
     let charsRegx =
-      /:|;|"|'|{|}|&|%|@|!|`|~|=|_|<|>|(\*+)|(\?+)|([acdefghijklnopqrstuvwxyz])|([H-L])|([N-Z])|0/g;
+      /:|;|"|'|{|}|&|%|@|!|`|~|=|_|<|>|(\$+)|(\*+)|(\?+)|(\^+)|(\[+)|(\]+)|(\\+)|(\|+)|(\(+)|(\)+)|([acdefghijklnopqrstuvwxyz])|([H-L])|([N-Z])|[0-9]|\s/g;
+
     let separadoresRegx = /,|-|\./g;
 
     if (charsRegx.test(currentValue)) return;
@@ -80,6 +82,7 @@ const TonesInput: React.FC<Props> = ({
   return (
     <>
       <span>
+        Tonalidades:
         {tones &&
           !formIsSubmited &&
           tones.map((chord, idx) => (
