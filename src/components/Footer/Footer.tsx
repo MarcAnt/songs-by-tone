@@ -20,7 +20,6 @@ const Footer: React.FC = () => {
         >
           <FaGithub />
         </a>
-        <span>version: 1.0.0</span>
       </p>
     </FooterWrapper>
   );

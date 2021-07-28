@@ -1,7 +1,11 @@
 import { FormEvent, useState, useRef, useEffect } from "react";
+
 import { ALERT_MESSAGES } from "../helpers/alertMessages";
 import { createData } from "../helpers/Api";
+
 import Alert from "./Alert/Alert";
+
+import { useLocation } from "react-router-dom";
 
 import ChordsInput from "./ChordsInput";
 import TonesInput from "./TonesInput";
@@ -18,15 +22,16 @@ export const initialValues: InitialValues = {
   tones: [],
 };
 
-const SongForm = () => {
+const SongForm: React.FC = () => {
   const [form, setForm] = useState(initialValues);
   const [formIsSubmited, setFormIsSubmited] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
 
   const [alertIsOpen, setAlertIsOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [error, setError] = useState(false);
 
+  const inputRef = useRef<HTMLInputElement>(null);
+  const location = useLocation();
   //Aqui se enviaran los datos al db
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -55,7 +60,10 @@ const SongForm = () => {
   useEffect(() => {
     //Clear the form after submitting
     if (formIsSubmited) setForm(initialValues);
-  }, [formIsSubmited]);
+
+    //Detect the route to focus input
+    if (location.pathname === "/create") inputRef.current?.focus();
+  }, [formIsSubmited, location]);
 
   //Aqui se obtienen los datos del form
   const handleChange = (e: FormEvent<HTMLInputElement>) => {
@@ -80,9 +88,12 @@ const SongForm = () => {
   return (
     <div className="form-wrapper">
       <section>
-        <p>
-          Puedes crear las canciones segun su tonalidad. Solo recuerda separar
-          por comas (<span>,</span>) cada tono o acorde para poder agregarlos.
+        <p style={{ opacity: 1 }}>Ingresa en nombre del tema o cancion.</p>
+        <p style={{ opacity: 0.5 }}>
+          Separa cada tonalidad por comas (<span>,</span>) para agregar.
+        </p>
+        <p style={{ opacity: 0.5 }}>
+          Separa cada acorder por comas (<span>,</span>) para agregar.
         </p>
       </section>
       <form onSubmit={handleSubmit}>
@@ -94,6 +105,7 @@ const SongForm = () => {
           onChange={handleChange}
           ref={inputRef}
           maxLength={50}
+          autoComplete="off"
         />
 
         <TonesInput

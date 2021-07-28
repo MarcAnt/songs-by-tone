@@ -4,9 +4,10 @@ export const GlobalStyles = createGlobalStyle`
 
     :root {
         --bgColor: #fffcf2;
+        /* --bgColor: #b5651d; */
         --generalColor: #fffcf2;
         --generalColorDark: #f6f4ec;
-        --btnBgColor: #663399;
+        --btnBgColor: #3D444B;
         --btnBorder:  #66339980;
         --error: #f21d2b;
         --success: #1DF27A;
@@ -110,10 +111,9 @@ export const GlobalStyles = createGlobalStyle`
         /* border: 5px solid var(--btnBorder); */
         background-color: var(--btnBorder);
     }
-    button:hover, input[type="submit"]:hover {
-        /* border: 5px solid var(--btnBorder); */
+    /* button:hover, input[type="submit"]:hover {
         box-shadow: 0 0 0 2px var(--btnBorder);
-    }
+    } */
 
     .site-wrapper {
     
@@ -136,9 +136,12 @@ export const GlobalStyles = createGlobalStyle`
             flex: 50%;
             p {
                 padding-left: 2rem;
-                font-size: 2.5rem;
+                padding-bottom: 1rem;
+                font-size: 2rem;
                 font-weight: bolder;
                 width: 80%;
+                text-shadow: 3px 3px 2px #b299cc;
+
 
                 span {
                     color: var(--btnBgColor);
@@ -149,6 +152,35 @@ export const GlobalStyles = createGlobalStyle`
         form {
             flex: 50%;
             margin: 0;
+
+            span button {
+                background-color: var(--btnBorder);
+                box-shadow: 1px 1px 0 2.5px var(--btnBgColor);
+                color: var(--generalColor);
+                padding: .2rem;
+                margin: .2rem;
+            }
+
+            input {
+                border: none;
+                box-shadow: 1px 1px 0 2.5px var(--btnBgColor);
+            }
+
+            input[type="text"]:focus {
+                box-shadow: 1px 1px 0 2.5px var(--btnBgColor), 0 0 .2rem .25rem #66339950;
+            }
+            
+            input[type="submit"] {
+                border-radius: 4px;
+                background-color: var(--btnBorder);
+                box-shadow: 1px 1px 0 2.5px var(--btnBgColor);
+                color: var(--generalColor);
+            }
+
+            input:focus {
+                border: none;
+
+            }
         }
     }
 
@@ -165,6 +197,7 @@ export const GlobalStyles = createGlobalStyle`
             padding: 1rem 2rem;
             margin: 0 auto;
             width: 60%;
+            text-shadow: 3px 3px 2px #b299cc;
         }
     }
 
@@ -182,17 +215,25 @@ export const GlobalStyles = createGlobalStyle`
 
         .search-bar {
             
+            border-radius: 4px;
+            box-shadow: 1px 1px 0 2.5px var(--btnBgColor);
 
             .search-bar-content {
-
                 border-top-left-radius: 4px;
                 border-bottom-left-radius: 4px;
-                border: 2px solid var(--btnBgColor);
+                /* border: 2px solid var(--btnBgColor); */
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 width: 80%;
+                transition: box-shadow .15s ease-in-out, boder-color .15s ease-in-out;
+                
             }
+            
+            .search-bar-content:focus-within  {
+                box-shadow: 0 0 .8rem .25rem #66339950;
+            }
+
             position: relative;
             width: 100%;
             display: flex;
@@ -205,6 +246,8 @@ export const GlobalStyles = createGlobalStyle`
                 width: 20%;
                 border-top-right-radius: 4px;
                 border-bottom-right-radius: 4px;
+                background-color:var(--btnBorder);
+                box-shadow: 1px 1px 0 2.5px var(--btnBgColor);
             }
 
             div[class^=" css"] {
@@ -300,7 +343,8 @@ export const GlobalStyles = createGlobalStyle`
         background-color: #fff;
         border-radius: 4px;
         border: 4px solid var(--generalColor);
-        box-shadow: 1px 1px 2.5px grey;
+        /* box-shadow: 1px 1px 2.5px grey; */
+        box-shadow: 1px 1px 0 2.5px var(--btnBorder);
         display: flex;
         justify-content: space-evenly;
         align-items: center;
@@ -345,7 +389,7 @@ export const GlobalStyles = createGlobalStyle`
 
     @media (max-width: 1024px) {
         .card-grid {
-            margin: 1.5rem;
+            margin: 1.5rem 2rem;
         }
 
         .form-wrapper{
@@ -357,6 +401,8 @@ export const GlobalStyles = createGlobalStyle`
                 span,input[type="text"] {
                     width: 80%;
                 }
+
+                
 
                 span button[type="button"]{
                     padding: 0 .2rem;
@@ -394,7 +440,7 @@ export const GlobalStyles = createGlobalStyle`
             section p {
                 font-size: 1rem;
                 text-align: center;
-                padding: 0;
+                padding-bottom: 1rem;
                 margin: 0 auto;
             }
             section {

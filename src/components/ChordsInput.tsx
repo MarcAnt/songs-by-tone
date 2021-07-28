@@ -1,4 +1,10 @@
-import React, { useState, ChangeEvent, MouseEvent } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  ChangeEvent,
+  MouseEvent,
+} from "react";
 import { InitialValues } from "./SongForm";
 
 import Alert from "./Alert/Alert";
@@ -26,6 +32,7 @@ const ChordsInput: React.FC<Props> = ({
   const [alertMessage, setAlertMessage] = useState("");
   const [alertIsOpen, setAlertIsOpen] = useState(false);
 
+  const inputRef = useRef<HTMLInputElement>(null);
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     let currentValue = e.currentTarget.value;
     let charsRegx =
@@ -77,6 +84,10 @@ const ChordsInput: React.FC<Props> = ({
     });
   };
 
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, [chords]);
+
   return (
     <>
       <span>
@@ -95,6 +106,9 @@ const ChordsInput: React.FC<Props> = ({
         value={inputValue}
         placeholder={placeholder}
         onChange={handleInput}
+        autoComplete="off"
+        ref={inputRef}
+        disabled={chords.length >= 5 ? true : false}
       />
       {error ? (
         <Alert

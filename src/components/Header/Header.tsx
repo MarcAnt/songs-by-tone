@@ -1,13 +1,23 @@
 import { HeaderWrapper } from "./Header.style";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+
 const Header = () => {
+  let location = useLocation();
+
   return (
     <HeaderWrapper>
       <nav>
         <Link to="/">SongsByTone</Link>
-        <Link className="create" to="/create">
-          Crear Canción
-        </Link>
+
+        {location.pathname === "/" ? (
+          <Link className="create" to="/create">
+            Crear Canción
+          </Link>
+        ) : (
+          <Link className="create" to="/">
+            Buscar Canción
+          </Link>
+        )}
       </nav>
     </HeaderWrapper>
   );

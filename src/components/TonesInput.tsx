@@ -1,4 +1,10 @@
-import React, { useState, ChangeEvent, MouseEvent } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  ChangeEvent,
+  MouseEvent,
+} from "react";
 import { ALERT_MESSAGES } from "../helpers/alertMessages";
 import Alert from "./Alert/Alert";
 import { InitialValues } from "./SongForm";
@@ -25,6 +31,8 @@ const TonesInput: React.FC<Props> = ({
   const [error, setError] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertIsOpen, setAlertIsOpen] = useState(false);
+
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     let currentValue = e.currentTarget.value;
@@ -79,6 +87,10 @@ const TonesInput: React.FC<Props> = ({
     setError(false);
   };
 
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, [tones]);
+
   return (
     <>
       <span>
@@ -97,6 +109,9 @@ const TonesInput: React.FC<Props> = ({
         value={inputValue}
         placeholder={placeholder}
         onChange={handleInput}
+        autoComplete="off"
+        ref={inputRef}
+        disabled={tones.length >= 3 ? true : false}
       />
 
       {error ? (

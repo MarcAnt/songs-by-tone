@@ -24,17 +24,20 @@ export const HeaderWrapper = styled.header`
     font-size: 1.2rem;
     a.create {
       font-weight: bolder;
-      background-color: var(--bgColor);
-      border: 1px solid var(--btnBgColor);
+      /* background-color: var(--bgColor);
+      border: 1px solid var(--btnBgColor); */
+      box-shadow: 1px 1px 0 2.5px var(--btnBgColor);
       border-radius: 4px;
+      color: var(--generalColor);
+      background-color: var(--btnBorder);
       padding: 0.5rem;
       transition: all 0.3s ease-in-out;
     }
 
     a.create:hover {
-      background-color: var(--btnBgColor);
-      border: 1px solid var(--bgColor);
-      color: var(--generalColor);
+      color: var(--btnBgColor);
+      background-color: var(--generalColor);
+      box-shadow: 1px 1px 0 2.5px var(--btnBorder);
     }
   }
 `;

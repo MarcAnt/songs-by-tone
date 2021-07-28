@@ -10,6 +10,8 @@ import React, {
 //Libs
 import Select from "react-select";
 import { FaSearch } from "react-icons/fa";
+import { useLocation } from "react-router-dom";
+
 //Helpers
 import {
   filterTones,
@@ -57,22 +59,27 @@ const SongSearch: React.FC = () => {
   const [inputResults, setInputResults] = useState<string[]>([]);
   const [formIsSubmited, setFormIsSubmited] = useState<boolean>(false);
 
+  const location = useLocation();
+
   const inputRef = useRef<HTMLInputElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const searchResultsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setLoading(true);
-
-    getData()
-      .then((songs) => {
-        setLoading(false);
-        setSongs(songs);
-      })
-      .catch((error) => {
-        setLoading(true);
-        setError(error);
-      });
+    try {
+      getData()
+        .then((songs) => {
+          setLoading(false);
+          setSongs(songs);
+        })
+        .catch((error) => {
+          setLoading(true);
+          setError(error);
+        });
+    } catch (error) {
+      setError(true);
+    }
   }, []);
 
   const handleSelectFilter = (e: MyOption | null) => {
@@ -120,7 +127,7 @@ const SongSearch: React.FC = () => {
     setFormIsSubmited(false);
 
     let charsRegx =
-      /:|;|"|'|{|}|&|%|@|!|`|~|=|_|<|>|(\*+)|(\?+)|(\$+)|(\*+)|(\?+)|(\^+)|(\[+)|(\]+)|(\\+)|(\|+)|(\(+)|(\)+)([acdefghijklnopqrtvwxyz])|([H-L])|([N-Z])|([0])/g;
+      /:|;|"|'|{|}|&|%|@|!|`|~|=|_|<|>|(\*+)|(\?+)|(\$+)|(\*+)|(\?+)|(\^+)|(\[+)|(\]+)|(\\+)|(\|+)|(\(+)|(\)+)|([acdefghijklnopqrtvwxyz])|([H-L])|([N-Z])|([0])/g;
 
     if (charsRegx.test(currentValue)) {
       e.currentTarget.value = "";
@@ -139,7 +146,10 @@ const SongSearch: React.FC = () => {
         ? setFormIsSubmited(true)
         : setFormIsSubmited(false);
     });
-  }, []);
+
+    //Detect the route to focus input
+    if (location.pathname === "/") inputRef.current?.focus();
+  }, [location]);
 
   React.useEffect(() => {
     let count = 0;
