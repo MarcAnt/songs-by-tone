@@ -63,6 +63,10 @@ const SongForm: React.FC = () => {
 
     //Detect the route to focus input
     if (location.pathname === "/create") inputRef.current?.focus();
+
+    return () => {
+      setForm(initialValues);
+    };
   }, [formIsSubmited, location]);
 
   //Aqui se obtienen los datos del form

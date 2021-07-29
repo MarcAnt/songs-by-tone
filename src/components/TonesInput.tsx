@@ -6,7 +6,9 @@ import React, {
   MouseEvent,
 } from "react";
 import { ALERT_MESSAGES } from "../helpers/alertMessages";
+import { tonesInputRegx, separadoresRegx } from "../helpers/regularExp";
 import Alert from "./Alert/Alert";
+
 import { InitialValues } from "./SongForm";
 
 type Props = {
@@ -37,12 +39,12 @@ const TonesInput: React.FC<Props> = ({
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     let currentValue = e.currentTarget.value;
 
-    let charsRegx =
-      /:|;|"|'|{|}|&|%|@|!|`|~|=|_|<|>|(\$+)|(\*+)|(\?+)|(\^+)|(\[+)|(\]+)|(\\+)|(\|+)|(\(+)|(\)+)|([acdefghijklnopqrstuvwxyz])|([H-L])|([N-Z])|[0-9]|\s/g;
+    if (tonesInputRegx.test(currentValue)) {
+      inputRef.current!.value = "";
+      return;
+    }
 
-    let separadoresRegx = /,|-|\./g;
-
-    if (charsRegx.test(currentValue)) return;
+    if (currentValue === " ") return;
 
     if (separadoresRegx.test(currentValue)) {
       if (tones.length < 3) {
@@ -89,7 +91,10 @@ const TonesInput: React.FC<Props> = ({
 
   useEffect(() => {
     inputRef.current?.focus();
-  }, [tones]);
+    if (tonesInputRegx.test(inputValue)) {
+      setInputValue((prev) => prev.slice(0, -1));
+    }
+  }, [tones, inputValue]);
 
   return (
     <>

@@ -29,15 +29,13 @@ export const HeaderWrapper = styled.header`
       box-shadow: 1px 1px 0 2.5px var(--btnBgColor);
       border-radius: 4px;
       color: var(--generalColor);
-      background-color: var(--btnBorder);
+      background-color: var(--btnBorderDark);
       padding: 0.5rem;
       transition: all 0.3s ease-in-out;
     }
 
     a.create:hover {
-      color: var(--btnBgColor);
-      background-color: var(--generalColor);
-      box-shadow: 1px 1px 0 2.5px var(--btnBorder);
+      background-color: var(--btnBorder);
     }
   }
 `;

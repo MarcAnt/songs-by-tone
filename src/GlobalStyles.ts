@@ -9,6 +9,7 @@ export const GlobalStyles = createGlobalStyle`
         --generalColorDark: #f6f4ec;
         --btnBgColor: #3D444B;
         --btnBorder:  #66339980;
+        --btnBorderDark:  #663399;
         --error: #f21d2b;
         --success: #1DF27A;
     }
@@ -131,15 +132,16 @@ export const GlobalStyles = createGlobalStyle`
         display: flex;
         justify-content: center;
         align-items: center;
+        
 
         section {
-            flex: 50%;
+            flex: 70%;
             p {
                 padding-left: 2rem;
                 padding-bottom: 1rem;
                 font-size: 2rem;
                 font-weight: bolder;
-                width: 80%;
+                width: 60%;
                 text-shadow: 3px 3px 2px #b299cc;
 
 
@@ -150,8 +152,12 @@ export const GlobalStyles = createGlobalStyle`
 
         }
         form {
-            flex: 50%;
-            margin: 0;
+            flex: 40%;
+            margin: 2rem;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 1px 1px 0 2.5px var(--btnBorderDark);
 
             span button {
                 background-color: var(--btnBorder);
@@ -168,6 +174,11 @@ export const GlobalStyles = createGlobalStyle`
 
             input[type="text"]:focus {
                 box-shadow: 1px 1px 0 2.5px var(--btnBgColor), 0 0 .2rem .25rem #66339950;
+            
+            }
+
+            input[type="text"] {
+                width: 100%;
             }
             
             input[type="submit"] {
@@ -210,7 +221,7 @@ export const GlobalStyles = createGlobalStyle`
         flex-direction: column;
         position: relative;
         span {
-            width: 50%;
+            width: 100%;
         }
 
         .search-bar {
@@ -394,15 +405,15 @@ export const GlobalStyles = createGlobalStyle`
 
         .form-wrapper{
             section p {
-                font-size: 2rem;
+                font-size: 1.5rem;
+                width: 100%;
             }
 
             form {
+                flex: 60%;
                 span,input[type="text"] {
                     width: 80%;
                 }
-
-                
 
                 span button[type="button"]{
                     padding: 0 .2rem;

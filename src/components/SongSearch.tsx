@@ -2,7 +2,6 @@ import React, {
   useEffect,
   useState,
   useRef,
-  useMemo,
   FormEvent,
   ChangeEvent,
 } from "react";
@@ -16,13 +15,15 @@ import { useLocation } from "react-router-dom";
 import {
   filterTones,
   filterChords,
-  createMatches,
   filterResultBar,
+  filterOnSubmit,
 } from "../helpers/songSearchFunctions";
 import { getData } from "../helpers/Api";
+import { songSearchRegx } from "../helpers/regularExp";
 
 //Components
 import SongDetails from "./SongDetails";
+import { resultsDropdown } from "../helpers/handleResultDropdown";
 
 //Types
 export type SongsType = {
@@ -37,15 +38,13 @@ type MyOption = {
   value: string;
 };
 
-type filterList = {
-  [prop: string]: () => void;
-};
-
 const options = [
   { value: "all", label: "Tones/Chords" },
   { value: "tones", label: "Tones" },
   { value: "chords", label: "Chords" },
 ];
+
+const filter_default = "all";
 
 const SongSearch: React.FC = () => {
   const [search, setSearch] = useState<string>("");
@@ -80,27 +79,15 @@ const SongSearch: React.FC = () => {
     } catch (error) {
       setError(true);
     }
+
+    return () => {
+      setSongs([]);
+    };
   }, []);
 
   const handleSelectFilter = (e: MyOption | null) => {
     setFilterBy(e!.value);
   };
-
-  const tonesMatched = useMemo(
-    () => filterTones(songs, search),
-    [songs, search]
-  );
-  const chordMatched = useMemo(
-    () => filterChords(songs, search),
-    [songs, search]
-  );
-
-  const filterList: filterList = {
-    chords: () => createMatches(setMatches, chordMatched),
-    tones: () => createMatches(setMatches, tonesMatched),
-    all: () => createMatches(setMatches, tonesMatched, chordMatched),
-  };
-  const filter_default = "all";
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -111,25 +98,38 @@ const SongSearch: React.FC = () => {
     }
     setFormIsSubmited(true);
     e.currentTarget.reset();
-    return filterList[filterBy] ? filterList[filterBy]() : filter_default;
+
+    return filterOnSubmit(
+      setMatches,
+      filterChords(songs, search),
+      filterTones(songs, search)
+    )[filterBy]
+      ? filterOnSubmit(
+          setMatches,
+          filterChords(songs, search),
+          filterTones(songs, search)
+        )[filterBy]()
+      : filter_default;
   };
 
   useEffect(() => {
+    //Filter in result matches
     let results: string[];
     if (search) {
-      results = filterResultBar(chordMatched, tonesMatched, search)[filterBy];
+      results = filterResultBar(
+        filterChords(songs, search),
+        filterTones(songs, search),
+        search
+      )[filterBy];
       results && setInputResults(results);
     }
-  }, [search, chordMatched, tonesMatched, filterBy]);
+  }, [search, songs, filterBy]);
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     let currentValue = e.currentTarget.value;
     setFormIsSubmited(false);
 
-    let charsRegx =
-      /:|;|"|'|{|}|&|%|@|!|`|~|=|_|<|>|(\*+)|(\?+)|(\$+)|(\*+)|(\?+)|(\^+)|(\[+)|(\]+)|(\\+)|(\|+)|(\(+)|(\)+)|([acdefghijklnopqrtvwxyz])|([H-L])|([N-Z])|([0])/g;
-
-    if (charsRegx.test(currentValue)) {
+    if (songSearchRegx.test(currentValue)) {
       e.currentTarget.value = "";
       currentValue = "";
       setSearch("");
@@ -149,45 +149,10 @@ const SongSearch: React.FC = () => {
 
     //Detect the route to focus input
     if (location.pathname === "/") inputRef.current?.focus();
-  }, [location]);
 
-  React.useEffect(() => {
-    let count = 0;
-    let parentHeight = searchResultsRef.current?.getBoundingClientRect().height;
-    let y =
-      searchResultsRef.current?.children[0]?.getBoundingClientRect().height;
-
-    if (search) {
-      setTimeout(() => {
-        y =
-          searchResultsRef.current?.children[0]?.getBoundingClientRect().height;
-        parentHeight = searchResultsRef.current?.getBoundingClientRect().height;
-      }, 50);
-
-      // console.log(count, parentHeight, y);
-      searchResultsRef.current?.addEventListener("scroll", () => {
-        count = searchResultsRef.current!.scrollTop;
-      });
-
-      document.addEventListener("keydown", (e) => {
-        searchResultsRef.current?.focus();
-
-        if (e.key === "ArrowDown") {
-          if (y! - parentHeight! <= count) return;
-
-          searchResultsRef.current?.scroll(0, (count = count + 25));
-        }
-
-        if (e.key === "ArrowUp") {
-          if (count <= 0) {
-            count = 25;
-          }
-
-          searchResultsRef.current?.scroll(0, (count = count - 25));
-        }
-      });
-    }
-  }, [search]);
+    //handle scroll for the dropdown for search results
+    resultsDropdown(search, searchResultsRef);
+  }, [location, search]);
 
   const handleSearchBar = (inputResult: string) => {
     setSearch(inputResult);

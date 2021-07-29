@@ -8,7 +8,9 @@ import React, {
 import { InitialValues } from "./SongForm";
 
 import Alert from "./Alert/Alert";
+
 import { ALERT_MESSAGES } from "../helpers/alertMessages";
+import { chordsInputRegx, separadoresRegx } from "../helpers/regularExp";
 
 type Props = {
   form: InitialValues;
@@ -35,11 +37,11 @@ const ChordsInput: React.FC<Props> = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     let currentValue = e.currentTarget.value;
-    let charsRegx =
-      /:|;|"|'|{|}|&|%|@|!|`|~|=|_|<|>|(\*+)|(\?+)|(\^+)|(\[+)|(\]+)|(\\+)|(\|+)|(\(+)|(\)+)|([acdefghijklnopqrtuvwxyz])|([H-L])|([N-Z])|0|\s/g;
-    let separadoresRegx = /,|-|\./g;
-
-    if (charsRegx.test(currentValue)) return;
+    if (currentValue === " ") return;
+    if (chordsInputRegx.test(currentValue)) {
+      inputRef.current!.value = "";
+      return;
+    }
 
     if (separadoresRegx.test(currentValue)) {
       if (chords.length < 5) {
@@ -86,7 +88,12 @@ const ChordsInput: React.FC<Props> = ({
 
   useEffect(() => {
     inputRef.current?.focus();
-  }, [chords]);
+    if (chordsInputRegx.test(inputValue)) {
+      setInputValue((prev) => prev.slice(0, -1));
+
+      return;
+    }
+  }, [chords, inputValue]);
 
   return (
     <>
