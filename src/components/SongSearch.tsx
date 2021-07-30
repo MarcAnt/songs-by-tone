@@ -20,10 +20,12 @@ import {
 } from "../helpers/songSearchFunctions";
 import { getData } from "../helpers/Api";
 import { songSearchRegx } from "../helpers/regularExp";
+import { MyOption, options, styles } from "../helpers/reactSelectOptions";
 
 //Components
 import SongDetails from "./SongDetails";
 import { resultsDropdown } from "../helpers/handleResultDropdown";
+import { SearchWrapper } from "./SongSearch/SongSearch.styles";
 
 //Types
 export type SongsType = {
@@ -32,17 +34,6 @@ export type SongsType = {
   chords: string[];
   tones: string[];
 }[];
-
-type MyOption = {
-  label: string;
-  value: string;
-};
-
-const options = [
-  { value: "all", label: "Tones/Chords" },
-  { value: "tones", label: "Tones" },
-  { value: "chords", label: "Chords" },
-];
 
 const filter_default = "all";
 
@@ -160,7 +151,7 @@ const SongSearch: React.FC = () => {
   };
 
   return (
-    <div className="song-search-container">
+    <SearchWrapper>
       <section>
         <p>Un simple buscador de canciones por tonalidad o acordes.</p>
       </section>
@@ -168,7 +159,13 @@ const SongSearch: React.FC = () => {
       <form ref={formRef} onSubmit={handleSubmit}>
         <div className="search-bar">
           <div className="search-bar-content">
-            <Select options={options} onChange={(e) => handleSelectFilter(e)} />
+            <Select
+              options={options}
+              placeholder="Seleccionar"
+              defaultValue={options[0]}
+              onChange={(e) => handleSelectFilter(e)}
+              styles={styles}
+            />
             <input
               type="text"
               name="search"
@@ -198,7 +195,7 @@ const SongSearch: React.FC = () => {
         </div>
       </form>
       {matches && !loading && <SongDetails matches={matches} />}
-    </div>
+    </SearchWrapper>
   );
 };
 

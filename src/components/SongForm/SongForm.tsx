@@ -1,14 +1,16 @@
 import { FormEvent, useState, useRef, useEffect } from "react";
 
-import { ALERT_MESSAGES } from "../helpers/alertMessages";
-import { createData } from "../helpers/Api";
+import { ALERT_MESSAGES } from "../../helpers/alertMessages";
+import { createData } from "../../helpers/Api";
 
-import Alert from "./Alert/Alert";
+import Alert from "../Alert/Alert";
 
 import { useLocation } from "react-router-dom";
 
-import ChordsInput from "./ChordsInput";
-import TonesInput from "./TonesInput";
+import ChordsInput from "../ChordsInput";
+import TonesInput from "../TonesInput";
+
+import { FormWrapper } from "./SongForm.styles";
 
 export type InitialValues = {
   name: string;
@@ -29,6 +31,7 @@ const SongForm: React.FC = () => {
   const [alertIsOpen, setAlertIsOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [error, setError] = useState(false);
+  const [openSuccess, setOpenSuccess] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const location = useLocation();
@@ -38,20 +41,24 @@ const SongForm: React.FC = () => {
 
     if (form.name === "" || form.tones.length <= 0 || form.chords.length <= 0) {
       inputRef.current!.focus();
-      setAlertIsOpen(false);
       setForm({
         ...form,
         [e.currentTarget.name]: e.currentTarget.value,
       });
       setFormIsSubmited(false);
+
+      setAlertIsOpen(false);
       setAlertMessage(ALERT_MESSAGES.emptyForm);
+      setOpenSuccess(false);
       setError(true);
     } else {
-      setAlertIsOpen(false);
       createData(form);
-      setError(false);
+      setForm(initialValues);
       setFormIsSubmited(true);
+      setError(false);
+      setAlertIsOpen(false);
       setAlertMessage(ALERT_MESSAGES.submitedForm);
+      setOpenSuccess(true);
     }
 
     e.currentTarget.reset();
@@ -67,7 +74,7 @@ const SongForm: React.FC = () => {
     return () => {
       setForm(initialValues);
     };
-  }, [formIsSubmited, location]);
+  }, [location, formIsSubmited]);
 
   //Aqui se obtienen los datos del form
   const handleChange = (e: FormEvent<HTMLInputElement>) => {
@@ -90,7 +97,7 @@ const SongForm: React.FC = () => {
   };
 
   return (
-    <div className="form-wrapper">
+    <FormWrapper>
       <section>
         <p style={{ opacity: 1 }}>Ingresa en nombre del tema o cancion.</p>
         <p style={{ opacity: 0.5 }}>
@@ -118,6 +125,7 @@ const SongForm: React.FC = () => {
           form={form}
           setForm={setForm}
           formIsSubmited={formIsSubmited}
+          setFormIsSubmited={setFormIsSubmited}
         />
         <ChordsInput
           name="chords"
@@ -125,10 +133,11 @@ const SongForm: React.FC = () => {
           form={form}
           setForm={setForm}
           formIsSubmited={formIsSubmited}
+          setFormIsSubmited={setFormIsSubmited}
         />
         <input type="submit" value="Crear" />
       </form>
-      {formIsSubmited && (
+      {openSuccess && (
         <Alert
           width="300px"
           height="100px"
@@ -153,7 +162,7 @@ const SongForm: React.FC = () => {
           alertIsOpen={alertIsOpen}
         />
       ) : null}
-    </div>
+    </FormWrapper>
   );
 };
 

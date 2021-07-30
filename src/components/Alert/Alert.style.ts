@@ -93,7 +93,7 @@ export const AlertWrapper = styled.div<typeAlertWrapper>`
   box-shadow: 1px 1px 10px #ddd;
 
   min-width: ${(props) => (props.width ? props.width : "300px")};
-  height: ${(props) => (props.height ? props.height : "200px")};
+  min-height: ${(props) => (props.height ? props.height : "200px")};
   background-color: ${(props) =>
     props.colorBg ? props.colorBg : "var(--btnBgColor)"};
 
@@ -108,8 +108,8 @@ export const AlertWrapper = styled.div<typeAlertWrapper>`
   p {
     color: ${(props) => (props.color ? props.color : "var(--generalColor)")};
     text-align: center;
-    padding: 1rem;
-    width: 50%;
+    padding: 2rem;
+    min-width: 50%;
     margin: 0 auto;
   }
 

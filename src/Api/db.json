@@ -188,6 +188,287 @@
         "B"
       ],
       "id": 15
+    },
+    {
+      "name": "Cancion 1",
+      "chords": [
+        "A",
+        "Cm",
+        "Em"
+      ],
+      "tones": [
+        "A"
+      ],
+      "id": 16
+    },
+    {
+      "name": "Cancion 2",
+      "chords": [
+        "B",
+        "C#m"
+      ],
+      "tones": [
+        "B"
+      ],
+      "id": 17
+    },
+    {
+      "name": "Cancion 3",
+      "chords": [
+        "B",
+        "C#m",
+        "C"
+      ],
+      "tones": [
+        ","
+      ],
+      "id": 18
+    },
+    {
+      "name": "Cancion 3",
+      "chords": [
+        "C",
+        "Am",
+        "Em"
+      ],
+      "tones": [
+        "C"
+      ],
+      "id": 19
+    },
+    {
+      "name": "Cancion 4",
+      "chords": [
+        "D",
+        "Em",
+        "F#m"
+      ],
+      "tones": [
+        "D"
+      ],
+      "id": 20
+    },
+    {
+      "name": "Cancion 5",
+      "chords": [
+        "E",
+        "G"
+      ],
+      "tones": [
+        "E"
+      ],
+      "id": 21
+    },
+    {
+      "name": "Cancion 6",
+      "chords": [
+        "F",
+        "A#m"
+      ],
+      "tones": [
+        "F"
+      ],
+      "id": 22
+    },
+    {
+      "name": "Cancion 7",
+      "chords": [
+        "G",
+        "Bm",
+        "D"
+      ],
+      "tones": [
+        "G"
+      ],
+      "id": 23
+    },
+    {
+      "name": "Cancion 8",
+      "chords": [
+        "C",
+        "Cm",
+        "Am"
+      ],
+      "tones": [
+        "C"
+      ],
+      "id": 24
+    },
+    {
+      "name": "Cancion81",
+      "chords": [
+        "Em",
+        "Em7",
+        "A"
+      ],
+      "tones": [
+        "E"
+      ],
+      "id": 25
+    },
+    {
+      "name": "Cancion9",
+      "chords": [
+        "Bm",
+        "D",
+        "D7"
+      ],
+      "tones": [
+        "B"
+      ],
+      "id": 26
+    },
+    {
+      "name": "M",
+      "chords": [
+        "A7"
+      ],
+      "tones": [
+        "A"
+      ],
+      "id": 27
+    },
+    {
+      "name": "Em",
+      "chords": [
+        "Em"
+      ],
+      "tones": [
+        "Em"
+      ],
+      "id": 28
+    },
+    {
+      "name": "A",
+      "chords": [
+        "Am"
+      ],
+      "tones": [
+        "A"
+      ],
+      "id": 29
+    },
+    {
+      "name": "Otro",
+      "chords": [
+        "G"
+      ],
+      "tones": [
+        "G"
+      ],
+      "id": 30
+    },
+    {
+      "name": "A menor",
+      "chords": [
+        "Am",
+        "C"
+      ],
+      "tones": [
+        "Am"
+      ],
+      "id": 31
+    },
+    {
+      "name": "Nuevp",
+      "chords": [
+        "A7",
+        "Dm6"
+      ],
+      "tones": [
+        "C"
+      ],
+      "id": 32
+    },
+    {
+      "name": "Marcos",
+      "chords": [
+        "Em"
+      ],
+      "tones": [
+        "E"
+      ],
+      "id": 33
+    },
+    {
+      "name": "Ultimo dato",
+      "chords": [
+        "B"
+      ],
+      "tones": [
+        "A"
+      ],
+      "id": 34
+    },
+    {
+      "name": "Otro ultimo dato",
+      "chords": [
+        "F"
+      ],
+      "tones": [
+        "E"
+      ],
+      "id": 35
+    },
+    {
+      "name": "E",
+      "chords": [
+        "E"
+      ],
+      "tones": [
+        "E"
+      ],
+      "id": 36
+    },
+    {
+      "name": "Mas datos",
+      "chords": [
+        "Am"
+      ],
+      "tones": [
+        "E"
+      ],
+      "id": 37
+    },
+    {
+      "name": "E",
+      "chords": [
+        "E"
+      ],
+      "tones": [
+        "E"
+      ],
+      "id": 38
+    },
+    {
+      "name": "Man",
+      "chords": [
+        "E"
+      ],
+      "tones": [
+        "E"
+      ],
+      "id": 39
+    },
+    {
+      "name": "E",
+      "chords": [
+        "E"
+      ],
+      "tones": [
+        "E"
+      ],
+      "id": 40
+    },
+    {
+      "name": "Final",
+      "chords": [
+        "E"
+      ],
+      "tones": [
+        "E"
+      ],
+      "id": 41
     }
   ]
 }

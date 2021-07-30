@@ -9,7 +9,7 @@ import { ALERT_MESSAGES } from "../helpers/alertMessages";
 import { tonesInputRegx, separadoresRegx } from "../helpers/regularExp";
 import Alert from "./Alert/Alert";
 
-import { InitialValues } from "./SongForm";
+import { InitialValues } from "./SongForm/SongForm";
 
 type Props = {
   form: InitialValues;
@@ -17,14 +17,16 @@ type Props = {
   placeholder: string;
   name: string;
   formIsSubmited: boolean;
+  setFormIsSubmited: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const TonesInput: React.FC<Props> = ({
   setForm,
   form,
+  formIsSubmited,
+  setFormIsSubmited,
   placeholder,
   name,
-  formIsSubmited,
 }) => {
   const [tones, setTones] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
@@ -38,20 +40,15 @@ const TonesInput: React.FC<Props> = ({
 
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     let currentValue = e.currentTarget.value;
-
     if (tonesInputRegx.test(currentValue)) {
       inputRef.current!.value = "";
       return;
     }
 
-    if (currentValue === " ") return;
-
     if (separadoresRegx.test(currentValue)) {
       if (tones.length < 3) {
         setInputValue("");
-
         let repeatTones = tones.includes(currentValue.slice(0, -1).trim());
-
         if (repeatTones) {
           setError(true);
           setAlertMessage(ALERT_MESSAGES.similarTone);
@@ -63,11 +60,6 @@ const TonesInput: React.FC<Props> = ({
             ...form,
             tones: [...tones, currentValue.slice(0, -1).trim()],
           });
-        }
-
-        if (formIsSubmited) {
-          setTones([]);
-          setError(false);
         }
       } else {
         setAlertMessage(ALERT_MESSAGES.maxTones);
@@ -94,19 +86,28 @@ const TonesInput: React.FC<Props> = ({
     if (tonesInputRegx.test(inputValue)) {
       setInputValue((prev) => prev.slice(0, -1));
     }
-  }, [tones, inputValue]);
+  }, [inputValue]);
+
+  useEffect(() => {
+    if (formIsSubmited) {
+      setTones([]);
+      setFormIsSubmited(false);
+    }
+  }, [formIsSubmited, setFormIsSubmited]);
 
   return (
     <>
       <span>
         Tonalidades:
-        {tones &&
-          !formIsSubmited &&
-          tones.map((chord, idx) => (
-            <button type="button" key={idx} onClick={deleteTones}>
-              {chord} <span>X</span>
-            </button>
-          ))}
+        {tones
+          ? formIsSubmited
+            ? null
+            : tones.map((chord, idx) => (
+                <button type="button" key={idx} onClick={deleteTones}>
+                  {chord} <span>X</span>
+                </button>
+              ))
+          : null}
       </span>
       <input
         type="text"

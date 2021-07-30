@@ -1,4 +1,4 @@
-import { InitialValues } from "../components/SongForm";
+import { InitialValues } from "../components/SongForm/SongForm";
 const URL = "http://localhost:5000/songs";
 
 export const createData = async (formdata: InitialValues) => {

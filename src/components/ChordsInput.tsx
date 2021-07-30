@@ -5,7 +5,7 @@ import React, {
   ChangeEvent,
   MouseEvent,
 } from "react";
-import { InitialValues } from "./SongForm";
+import { InitialValues } from "./SongForm/SongForm";
 
 import Alert from "./Alert/Alert";
 
@@ -18,14 +18,16 @@ type Props = {
   placeholder: string;
   name: string;
   formIsSubmited: boolean;
+  setFormIsSubmited: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const ChordsInput: React.FC<Props> = ({
   setForm,
   form,
-  placeholder,
-  name,
   formIsSubmited,
+  placeholder,
+  setFormIsSubmited,
+  name,
 }) => {
   const [chords, setChords] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
@@ -61,10 +63,6 @@ const ChordsInput: React.FC<Props> = ({
             chords: [...chords, currentValue.slice(0, -1).trim()],
           });
         }
-
-        if (formIsSubmited) {
-          setChords([]);
-        }
       } else {
         setError(true);
         setAlertMessage(ALERT_MESSAGES.maxChords);
@@ -90,22 +88,27 @@ const ChordsInput: React.FC<Props> = ({
     inputRef.current?.focus();
     if (chordsInputRegx.test(inputValue)) {
       setInputValue((prev) => prev.slice(0, -1));
-
-      return;
     }
-  }, [chords, inputValue]);
+  }, [inputValue]);
+
+  useEffect(() => {
+    if (formIsSubmited) {
+      setChords([]);
+      setFormIsSubmited(false);
+    }
+  }, [formIsSubmited, setFormIsSubmited]);
 
   return (
     <>
       <span>
         Acordes:
-        {chords &&
-          !formIsSubmited &&
-          chords.map((chord, idx) => (
-            <button type="button" key={idx} onClick={deleteChords}>
-              {chord} <span>X</span>
-            </button>
-          ))}
+        {formIsSubmited
+          ? null
+          : chords.map((chord, idx) => (
+              <button type="button" key={idx} onClick={deleteChords}>
+                {chord} <span>X</span>
+              </button>
+            ))}
       </span>
       <input
         type="text"
