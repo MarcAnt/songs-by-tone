@@ -15,19 +15,6 @@ export const SearchWrapper = styled.div`
     text-shadow: 3px 3px 2px #b299cc;
   }
 
-  .card-grid {
-    display: grid;
-    align-content: center;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 1rem;
-    margin: 1.5rem auto 0 auto;
-    max-width: 1000px;
-    min-width: 300px;
-    /* min-height: 43vh; */
-    /* height: 44vh; */
-    align-content: flex-start;
-  }
-
   .search-matches-input {
     border-radius: 4px;
     background-color: whitesmoke;
@@ -73,7 +60,6 @@ export const SearchWrapper = styled.div`
     .search-bar-content {
       border-top-left-radius: 4px;
       border-bottom-left-radius: 4px;
-      /* border: 2px solid var(--btnBgColor); */
       display: flex;
       justify-content: center;
       align-items: center;
@@ -114,57 +100,6 @@ export const SearchWrapper = styled.div`
     div,
     input[type="text"] {
       border: none;
-    }
-  }
-
-  .card-item {
-    text-align: center;
-    background-color: #fff;
-    border-radius: 4px;
-    border: 4px solid var(--generalColor);
-    /* box-shadow: 1px 1px 2.5px grey; */
-    box-shadow: 1px 1px 0 2.5px var(--btnBorder);
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    color: var(--btnBgColor);
-    transition: all 0.2s ease-in-out;
-    cursor: pointer;
-
-    div {
-      flex: 70%;
-      text-align: left;
-    }
-
-    h4 {
-      font-size: 0.8rem;
-    }
-
-    p {
-      text-shadow: 1px 1px 2px #ddd;
-      font-weight: bolder;
-      font-size: 2.5rem;
-      /* margin: 1rem auto; */
-      flex: 30%;
-      text-align: left;
-    }
-
-    span {
-      font-size: 1rem;
-    }
-
-    .one-more-tone {
-      font-size: 1.3rem;
-    }
-  }
-
-  .card-item:hover {
-    transform: translateY(0.25rem);
-  }
-
-  @media (max-width: 1024px) {
-    .card-grid {
-      margin: 1.5rem 2rem;
     }
   }
 

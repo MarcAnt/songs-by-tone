@@ -1,9 +1,10 @@
-import { SongsType } from "./SongSearch";
-import SongCard from "./SongCard";
+import { SongsType } from "../SongSearch/SongSearch";
+import SongCard from "../SongCard/SongCard";
+import { CardGrid } from "./SongTable.styles";
 
 const SongTable = ({ matches }: { matches: SongsType }) => {
   return (
-    <div className="card-grid">
+    <CardGrid>
       {matches.length > 0 &&
         matches.map((match, index) => (
           <SongCard
@@ -13,7 +14,7 @@ const SongTable = ({ matches }: { matches: SongsType }) => {
             tones={match.tones}
           />
         ))}
-    </div>
+    </CardGrid>
   );
 };
 

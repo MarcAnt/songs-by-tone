@@ -1,3 +1,5 @@
+import { CardItem } from "./SongCard.styles";
+
 const SongCard = ({
   names,
   chords,
@@ -8,7 +10,7 @@ const SongCard = ({
   tones: string[];
 }) => {
   return (
-    <div className="card-item">
+    <CardItem>
       <p className={tones.length > 1 ? "one-more-tone " : ""}>
         {tones.join(", ")}
       </p>
@@ -16,7 +18,7 @@ const SongCard = ({
         <h4>{names}</h4>
         <span>{chords.join(", ")}</span>
       </div>
-    </div>
+    </CardItem>
   );
 };
 

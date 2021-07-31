@@ -25,7 +25,7 @@ export const FormWrapper = styled.div`
   span {
     button[type="button"] {
       width: auto;
-      padding: 0.5rem;
+      /* padding: 0.5rem; */
       border-radius: 4px;
       letter-spacing: 0.1rem;
       text-transform: none;

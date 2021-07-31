@@ -17,16 +17,18 @@ import {
   filterChords,
   filterResultBar,
   filterOnSubmit,
-} from "../helpers/songSearchFunctions";
-import { getData } from "../helpers/Api";
-import { songSearchRegx } from "../helpers/regularExp";
-import { MyOption, options, styles } from "../helpers/reactSelectOptions";
+} from "../../helpers/songSearchFunctions";
+import { getData } from "../../helpers/Api";
+import { songSearchRegx } from "../../helpers/regularExp";
+import { MyOption, options, styles } from "../../helpers/reactSelectOptions";
 
 //Components
-import SongDetails from "./SongDetails";
-import { resultsDropdown } from "../helpers/handleResultDropdown";
-import { SearchWrapper } from "./SongSearch/SongSearch.styles";
+import SongDetails from "../SongDetails";
+import { resultsDropdown } from "../../helpers/handleResultDropdown";
+import { SearchWrapper } from "./SongSearch.styles";
 
+//Loader
+import Loader from "../Loader/Loader";
 //Types
 export type SongsType = {
   id: number;
@@ -42,7 +44,7 @@ const SongSearch: React.FC = () => {
   const [songs, setSongs] = useState<SongsType>([]);
 
   const [, setError] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const [filterBy, setFilterBy] = useState<string>("all");
   const [matches, setMatches] = useState<SongsType>([]);
@@ -56,9 +58,12 @@ const SongSearch: React.FC = () => {
   const searchResultsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setLoading(true);
+    const abortController = new AbortController();
+    const signal = abortController.signal;
+
+    if (search === "") return;
     try {
-      getData()
+      getData(signal)
         .then((songs) => {
           setLoading(false);
           setSongs(songs);
@@ -70,11 +75,11 @@ const SongSearch: React.FC = () => {
     } catch (error) {
       setError(true);
     }
-
     return () => {
       setSongs([]);
+      abortController.abort();
     };
-  }, []);
+  }, [search]);
 
   const handleSelectFilter = (e: MyOption | null) => {
     setFilterBy(e!.value);
@@ -114,6 +119,11 @@ const SongSearch: React.FC = () => {
       )[filterBy];
       results && setInputResults(results);
     }
+
+    return () => {
+      results = [];
+      setInputResults([]);
+    };
   }, [search, songs, filterBy]);
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
@@ -147,7 +157,6 @@ const SongSearch: React.FC = () => {
 
   const handleSearchBar = (inputResult: string) => {
     setSearch(inputResult);
-    setFormIsSubmited(true);
   };
 
   return (
@@ -194,7 +203,7 @@ const SongSearch: React.FC = () => {
           ) : null}
         </div>
       </form>
-      {matches && !loading && <SongDetails matches={matches} />}
+      {loading ? <Loader /> : <SongDetails matches={matches} />}
     </SearchWrapper>
   );
 };
