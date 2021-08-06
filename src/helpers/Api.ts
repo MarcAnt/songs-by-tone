@@ -14,7 +14,7 @@ export const createData = async (formdata: InitialValues) => {
   return data;
 };
 
-export const getData = async (signal: AbortSignal) => {
+export const getData = async (signal?: AbortSignal) => {
   const res = await fetch(URL, { signal: signal });
   const data = await res.json();
   return data;

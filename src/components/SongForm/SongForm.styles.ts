@@ -23,13 +23,18 @@ export const FormWrapper = styled.div`
   }
 
   span {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    max-height: 30px;
+    min-height: 30px;
+    display: flex;
+    align-items: center;
     button[type="button"] {
       width: auto;
-      /* padding: 0.5rem; */
-      border-radius: 4px;
-      letter-spacing: 0.1rem;
+      border-radius: 2px;
+      letter-spacing: 0.05rem;
       text-transform: none;
-      margin-left: 0.5rem;
+      font-size: 0.8rem;
     }
     button[type="button"]:hover {
       border: none;
@@ -37,7 +42,7 @@ export const FormWrapper = styled.div`
   }
 
   form {
-    flex: 40%;
+    /* flex: 40%; */
     margin: 2rem;
     padding: 2rem;
     background-color: white;
@@ -50,6 +55,35 @@ export const FormWrapper = styled.div`
       color: var(--generalColor);
       padding: 0.2rem;
       margin: 0.2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      max-height: 20px;
+    }
+
+    .inputsContainer {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      width: 100%;
+      min-height: 200px;
+      margin-bottom: 0.5rem;
+      gap: 2rem;
+    }
+
+    .formControl:nth-child(1) {
+      flex: 30%;
+    }
+    .formControl {
+      flex: 50%;
+      width: 50%;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      input[type="text"] {
+        margin: 0.5rem 0;
+        width: 100%;
+      }
     }
 
     input {
@@ -88,7 +122,7 @@ export const FormWrapper = styled.div`
       flex: 60%;
       span,
       input[type="text"] {
-        width: 80%;
+        width: 100%;
       }
 
       span button[type="button"] {
@@ -106,13 +140,20 @@ export const FormWrapper = styled.div`
     form {
       span,
       input[type="text"] {
-        width: 90%;
+        width: 100%;
       }
     }
   }
 
   @media (max-width: 480px) {
     flex-direction: column;
+
+    .inputsContainer {
+      flex-direction: column;
+      .formControl {
+        width: 100%;
+      }
+    }
 
     section p {
       font-size: 1rem;

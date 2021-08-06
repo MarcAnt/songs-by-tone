@@ -1,16 +1,17 @@
 import { FormEvent, useState, useRef, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import { FormWrapper } from "./SongForm.styles";
 
 import { ALERT_MESSAGES } from "../../helpers/alertMessages";
-import { createData } from "../../helpers/Api";
+import { createData, getData } from "../../helpers/Api";
+import { getSongName } from "../../helpers/songFormFunctions";
 
 import Alert from "../Alert/Alert";
-
-import { useLocation } from "react-router-dom";
 
 import ChordsInput from "../ChordsInput";
 import TonesInput from "../TonesInput";
 
-import { FormWrapper } from "./SongForm.styles";
+import { SongsType } from "../SongSearch/SongSearch";
 
 export type InitialValues = {
   name: string;
@@ -28,6 +29,8 @@ const SongForm: React.FC = () => {
   const [form, setForm] = useState(initialValues);
   const [formIsSubmited, setFormIsSubmited] = useState(false);
 
+  const [songs, setSongs] = useState<SongsType>([]);
+
   const [alertIsOpen, setAlertIsOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [error, setError] = useState(false);
@@ -35,6 +38,7 @@ const SongForm: React.FC = () => {
 
   const inputRef = useRef<HTMLInputElement>(null);
   const location = useLocation();
+
   //Aqui se enviaran los datos al db
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -46,23 +50,58 @@ const SongForm: React.FC = () => {
         [e.currentTarget.name]: e.currentTarget.value,
       });
       setFormIsSubmited(false);
-
       setAlertIsOpen(false);
       setAlertMessage(ALERT_MESSAGES.emptyForm);
       setOpenSuccess(false);
       setError(true);
     } else {
-      createData(form);
-      setForm(initialValues);
-      setFormIsSubmited(true);
-      setError(false);
-      setAlertIsOpen(false);
-      setAlertMessage(ALERT_MESSAGES.submitedForm);
-      setOpenSuccess(true);
+      if (form.name.length <= 3) {
+        inputRef.current!.focus();
+
+        setAlertMessage(ALERT_MESSAGES.minLength);
+        setAlertIsOpen(false);
+        setError(true);
+      } else {
+        setForm({
+          ...form,
+          [e.currentTarget.name]: e.currentTarget.value,
+        });
+
+        let songName = getSongName(songs, form.name);
+        console.log(songName);
+        if (songName) {
+          setAlertMessage(ALERT_MESSAGES.similarName);
+          setAlertIsOpen(false);
+          setError(true);
+        } else {
+          // createData(form);
+          setForm(initialValues);
+          setFormIsSubmited(true);
+          setError(false);
+          setAlertIsOpen(false);
+          setAlertMessage(ALERT_MESSAGES.submitedForm);
+          setOpenSuccess(true);
+        }
+      }
     }
 
     e.currentTarget.reset();
   };
+
+  useEffect(() => {
+    if (form.name === "") return;
+    const abortController = new AbortController();
+    const signal = abortController.signal;
+    try {
+      getData(signal).then((songs) => setSongs(songs));
+    } catch (error) {
+      setError(true);
+      console.log(error);
+    }
+    return () => {
+      abortController.abort();
+    };
+  }, [form]);
 
   useEffect(() => {
     //Clear the form after submitting
@@ -98,15 +137,14 @@ const SongForm: React.FC = () => {
 
   return (
     <FormWrapper>
-      <section>
-        <p style={{ opacity: 1 }}>Ingresa en nombre del tema o cancion.</p>
-        <p style={{ opacity: 0.5 }}>
-          Separa cada tonalidad por comas (<span>,</span>) para agregar.
+      {/* <section>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo at
+          aperiam aliquam culpa, beatae molestias facere inventore consequatur
+          architecto ex iste doloremque illum quas est itaque perspiciatis harum
+          suscipit ducimus!
         </p>
-        <p style={{ opacity: 0.5 }}>
-          Separa cada acorder por comas (<span>,</span>) para agregar.
-        </p>
-      </section>
+      </section> */}
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -118,23 +156,24 @@ const SongForm: React.FC = () => {
           maxLength={50}
           autoComplete="off"
         />
-
-        <TonesInput
-          name="tones"
-          placeholder="C, E, Bb"
-          form={form}
-          setForm={setForm}
-          formIsSubmited={formIsSubmited}
-          setFormIsSubmited={setFormIsSubmited}
-        />
-        <ChordsInput
-          name="chords"
-          placeholder="C, A7, Gm6"
-          form={form}
-          setForm={setForm}
-          formIsSubmited={formIsSubmited}
-          setFormIsSubmited={setFormIsSubmited}
-        />
+        <div className="inputsContainer">
+          <TonesInput
+            name="tones"
+            placeholder="C, E, Bb"
+            form={form}
+            setForm={setForm}
+            formIsSubmited={formIsSubmited}
+            setFormIsSubmited={setFormIsSubmited}
+          />
+          <ChordsInput
+            name="chords"
+            placeholder="C, A7, Gm6"
+            form={form}
+            setForm={setForm}
+            formIsSubmited={formIsSubmited}
+            setFormIsSubmited={setFormIsSubmited}
+          />
+        </div>
         <input type="submit" value="Crear" />
       </form>
       {openSuccess && (

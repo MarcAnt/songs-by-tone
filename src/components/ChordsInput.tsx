@@ -6,11 +6,13 @@ import React, {
   MouseEvent,
 } from "react";
 import { InitialValues } from "./SongForm/SongForm";
-
+//components
 import Alert from "./Alert/Alert";
-
+import SearchMatches from "./SearchMatches/SearchMatches";
+//helpers
 import { ALERT_MESSAGES } from "../helpers/alertMessages";
 import { chordsInputRegx, separadoresRegx } from "../helpers/regularExp";
+import { getChordsByTone } from "../helpers/songFormFunctions";
 
 type Props = {
   form: InitialValues;
@@ -37,6 +39,7 @@ const ChordsInput: React.FC<Props> = ({
   const [alertIsOpen, setAlertIsOpen] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
+
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     let currentValue = e.currentTarget.value;
     if (currentValue === " ") return;
@@ -57,6 +60,9 @@ const ChordsInput: React.FC<Props> = ({
           setAlertIsOpen(false);
         } else {
           setError(false);
+
+          if (/\s|,/g.test(currentValue.slice(0, 1))) return;
+
           setChords([...chords, currentValue.slice(0, -1).trim()]);
           setForm({
             ...form,
@@ -84,11 +90,20 @@ const ChordsInput: React.FC<Props> = ({
     });
   };
 
+  const handleSeachBar = (inputValue: string) => {
+    console.log(inputValue);
+
+    setInputValue(inputValue);
+  };
+
   useEffect(() => {
-    inputRef.current?.focus();
     if (chordsInputRegx.test(inputValue)) {
       setInputValue((prev) => prev.slice(0, -1));
     }
+
+    // return () => {
+    //   setInputValue("");
+    // };
   }, [inputValue]);
 
   useEffect(() => {
@@ -96,30 +111,46 @@ const ChordsInput: React.FC<Props> = ({
       setChords([]);
       setFormIsSubmited(false);
     }
-  }, [formIsSubmited, setFormIsSubmited]);
 
+    // return () => {
+    //   setChords([]);
+    //   setFormIsSubmited(false);
+    // };
+  }, [formIsSubmited, setFormIsSubmited]);
   return (
     <>
-      <span>
-        Acordes:
-        {formIsSubmited
-          ? null
-          : chords.map((chord, idx) => (
-              <button type="button" key={idx} onClick={deleteChords}>
-                {chord} <span>X</span>
-              </button>
-            ))}
-      </span>
-      <input
-        type="text"
-        name={name}
-        value={inputValue}
-        placeholder={placeholder}
-        onChange={handleInput}
-        autoComplete="off"
-        ref={inputRef}
-        disabled={chords.length >= 5 ? true : false}
-      />
+      <div className="formControl">
+        <span style={{ padding: 0 }}>Acordes:</span>
+        <span>
+          {formIsSubmited
+            ? null
+            : chords.map((chord, idx) => (
+                <button type="button" key={idx} onClick={deleteChords}>
+                  {chord}
+                  <span style={{ paddingLeft: "0.1rem", fontSize: ".65rem" }}>
+                    X
+                  </span>
+                </button>
+              ))}
+        </span>
+        <input
+          type="text"
+          name={name}
+          value={inputValue}
+          placeholder={placeholder}
+          onChange={handleInput}
+          autoComplete="off"
+          ref={inputRef}
+          disabled={chords.length >= 5 ? true : false}
+        />
+        <SearchMatches
+          searchMatchesResults={getChordsByTone(inputValue)}
+          inputRef={inputRef}
+          handleSearchBar={handleSeachBar}
+          inputValue={inputValue}
+        />
+      </div>
+
       {error ? (
         <Alert
           width="300px"

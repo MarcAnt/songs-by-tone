@@ -29,6 +29,7 @@ import { SearchWrapper } from "./SongSearch.styles";
 
 //Loader
 import Loader from "../Loader/Loader";
+import SearchMatches from "../SearchMatches/SearchMatches";
 //Types
 export type SongsType = {
   id: number;
@@ -189,7 +190,7 @@ const SongSearch: React.FC = () => {
             <FaSearch />
           </button>
         </div>
-        <div className="search-matches-input" ref={searchResultsRef}>
+        {/* <div className="search-matches-input" ref={searchResultsRef}>
           {search ? (
             formIsSubmited ? null : (
               <ul>
@@ -201,7 +202,17 @@ const SongSearch: React.FC = () => {
               </ul>
             )
           ) : null}
-        </div>
+        </div> */}
+
+        <SearchMatches
+          searchMatchesResults={inputResults}
+          inputRef={inputRef}
+          handleSearchBar={handleSearchBar}
+          inputValue={search}
+          maxHeight="200px"
+          position="absolute"
+          top="5.55rem"
+        />
       </form>
       {loading ? <Loader /> : <SongDetails matches={matches} />}
     </SearchWrapper>

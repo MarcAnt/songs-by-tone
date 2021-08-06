@@ -7,9 +7,11 @@ import React, {
 } from "react";
 import { ALERT_MESSAGES } from "../helpers/alertMessages";
 import { tonesInputRegx, separadoresRegx } from "../helpers/regularExp";
+import { getTone } from "../helpers/songFormFunctions";
 import Alert from "./Alert/Alert";
 
 import { InitialValues } from "./SongForm/SongForm";
+import SearchMatches from "./SearchMatches/SearchMatches";
 
 type Props = {
   form: InitialValues;
@@ -81,11 +83,18 @@ const TonesInput: React.FC<Props> = ({
     setError(false);
   };
 
+  const handleSeachBar = (inputValue: string) => {
+    setInputValue(inputValue);
+  };
+
   useEffect(() => {
     inputRef.current?.focus();
     if (tonesInputRegx.test(inputValue)) {
       setInputValue((prev) => prev.slice(0, -1));
     }
+    // return () => {
+    //   setInputValue("");
+    // };
   }, [inputValue]);
 
   useEffect(() => {
@@ -93,32 +102,48 @@ const TonesInput: React.FC<Props> = ({
       setTones([]);
       setFormIsSubmited(false);
     }
+    // return () => {
+    //   setTones([]);
+    //   setFormIsSubmited(false);
+    // };
   }, [formIsSubmited, setFormIsSubmited]);
 
   return (
     <>
-      <span>
-        Tonalidades:
-        {tones
-          ? formIsSubmited
-            ? null
-            : tones.map((chord, idx) => (
-                <button type="button" key={idx} onClick={deleteTones}>
-                  {chord} <span>X</span>
-                </button>
-              ))
-          : null}
-      </span>
-      <input
-        type="text"
-        name={name}
-        value={inputValue}
-        placeholder={placeholder}
-        onChange={handleInput}
-        autoComplete="off"
-        ref={inputRef}
-        disabled={tones.length >= 3 ? true : false}
-      />
+      <div className="formControl">
+        <span>Tonalidades:</span>
+        <span>
+          {tones
+            ? formIsSubmited
+              ? null
+              : tones.map((chord, idx) => (
+                  <button type="button" key={idx} onClick={deleteTones}>
+                    {chord}
+                    <span style={{ paddingLeft: "0.1rem", fontSize: ".65rem" }}>
+                      X
+                    </span>
+                  </button>
+                ))
+            : null}
+        </span>
+        <input
+          type="text"
+          name={name}
+          value={inputValue}
+          placeholder={placeholder}
+          onChange={handleInput}
+          autoComplete="off"
+          ref={inputRef}
+          disabled={tones.length >= 3 ? true : false}
+        />
+
+        <SearchMatches
+          searchMatchesResults={getTone(inputValue)}
+          inputRef={inputRef}
+          handleSearchBar={handleSeachBar}
+          inputValue={inputValue}
+        />
+      </div>
 
       {error ? (
         <Alert

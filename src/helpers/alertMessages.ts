@@ -7,4 +7,6 @@ export const ALERT_MESSAGES = {
   emptyForm: "Por favor, rellena los campos para crear un registro",
   submitedForm: "Canción creada con éxito",
   maxLength: "Máximo de 50 caracteres",
+  minLength: "Mínimo de 4 caracteres",
+  similarName: "Agrega un nombre distinto",
 };
