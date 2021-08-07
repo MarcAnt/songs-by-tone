@@ -4,6 +4,7 @@ import React, {
   useRef,
   ChangeEvent,
   MouseEvent,
+  useContext,
 } from "react";
 import { InitialValues } from "./SongForm/SongForm";
 //components
@@ -13,6 +14,7 @@ import SearchMatches from "./SearchMatches/SearchMatches";
 import { ALERT_MESSAGES } from "../helpers/alertMessages";
 import { chordsInputRegx, separadoresRegx } from "../helpers/regularExp";
 import { getChordsByTone } from "../helpers/songFormFunctions";
+import SelectedInputContext from "../Context/inputSelectedContext";
 
 type Props = {
   form: InitialValues;
@@ -39,6 +41,8 @@ const ChordsInput: React.FC<Props> = ({
   const [alertIsOpen, setAlertIsOpen] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
+  const { selectedInput, handleSelectedInput } =
+    useContext(SelectedInputContext);
 
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     let currentValue = e.currentTarget.value;
@@ -117,6 +121,12 @@ const ChordsInput: React.FC<Props> = ({
     //   setFormIsSubmited(false);
     // };
   }, [formIsSubmited, setFormIsSubmited]);
+
+  useEffect(() => {
+    inputRef.current!.addEventListener("click", (e) => {
+      handleSelectedInput(inputRef.current!.name);
+    });
+  }, [handleSelectedInput, selectedInput]);
   return (
     <>
       <div className="formControl">

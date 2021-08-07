@@ -4,6 +4,7 @@ import React, {
   useRef,
   ChangeEvent,
   MouseEvent,
+  useContext,
 } from "react";
 import { ALERT_MESSAGES } from "../helpers/alertMessages";
 import { tonesInputRegx, separadoresRegx } from "../helpers/regularExp";
@@ -12,6 +13,8 @@ import Alert from "./Alert/Alert";
 
 import { InitialValues } from "./SongForm/SongForm";
 import SearchMatches from "./SearchMatches/SearchMatches";
+
+import SelectedInputContext from "../Context/inputSelectedContext";
 
 type Props = {
   form: InitialValues;
@@ -39,6 +42,8 @@ const TonesInput: React.FC<Props> = ({
   const [alertIsOpen, setAlertIsOpen] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
+  const { selectedInput, handleSelectedInput } =
+    useContext(SelectedInputContext);
 
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     let currentValue = e.currentTarget.value;
@@ -92,9 +97,6 @@ const TonesInput: React.FC<Props> = ({
     if (tonesInputRegx.test(inputValue)) {
       setInputValue((prev) => prev.slice(0, -1));
     }
-    // return () => {
-    //   setInputValue("");
-    // };
   }, [inputValue]);
 
   useEffect(() => {
@@ -102,11 +104,13 @@ const TonesInput: React.FC<Props> = ({
       setTones([]);
       setFormIsSubmited(false);
     }
-    // return () => {
-    //   setTones([]);
-    //   setFormIsSubmited(false);
-    // };
   }, [formIsSubmited, setFormIsSubmited]);
+
+  useEffect(() => {
+    inputRef.current!.addEventListener("click", (e) => {
+      handleSelectedInput(inputRef.current!.name);
+    });
+  }, [handleSelectedInput, selectedInput]);
 
   return (
     <>

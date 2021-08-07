@@ -38,4 +38,10 @@ export const HeaderWrapper = styled.header`
       background-color: var(--btnBorder);
     }
   }
+
+  @media (max-width: 768px) {
+    a.create {
+      font-size: 0.9rem;
+    }
+  }
 `;

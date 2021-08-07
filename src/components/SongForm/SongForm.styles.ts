@@ -7,15 +7,15 @@ export const FormWrapper = styled.div`
   align-items: center;
 
   section {
-    flex: 70%;
+    flex: 50%;
     p {
       padding-left: 2rem;
       padding-bottom: 1rem;
       font-size: 2rem;
       font-weight: bolder;
-      width: 60%;
+      width: 80%;
       text-shadow: 3px 3px 2px #b299cc;
-
+      transition: opacity 0.5s ease-in-out;
       span {
         color: var(--btnBgColor);
       }
@@ -23,12 +23,10 @@ export const FormWrapper = styled.div`
   }
 
   span {
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-    max-height: 30px;
     min-height: 30px;
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     button[type="button"] {
       width: auto;
       border-radius: 2px;
@@ -133,42 +131,60 @@ export const FormWrapper = styled.div`
   }
 
   @media (max-width: 768px) {
+    flex-direction: column;
+    section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      width: 80%;
+      padding-top: 2.5rem;
+    }
     section p {
-      font-size: 1.5rem;
+      text-align: center;
+      font-size: 1.1rem;
+      padding: 0;
+    }
+
+    span {
+      min-height: 20px;
     }
 
     form {
+      width: 80%;
       span,
       input[type="text"] {
         width: 100%;
       }
     }
-  }
-
-  @media (max-width: 480px) {
-    flex-direction: column;
-
     .inputsContainer {
       flex-direction: column;
       .formControl {
         width: 100%;
       }
     }
+  }
 
+  @media (max-width: 480px) {
     section p {
-      font-size: 1rem;
       text-align: center;
-      padding-bottom: 1rem;
       margin: 0 auto;
     }
     section {
       padding-top: 2rem;
+      padding-bottom: 1rem;
       flex: auto;
     }
 
     form {
       flex: 100%;
       width: 80%;
+      margin: 0 1rem 2rem 1rem;
+
+      input[type="text"] {
+        margin: 0.5rem;
+        padding: 0.8rem;
+      }
     }
   }
 `;

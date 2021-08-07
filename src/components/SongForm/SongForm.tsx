@@ -1,4 +1,4 @@
-import { FormEvent, useState, useRef, useEffect } from "react";
+import { FormEvent, useState, useRef, useEffect, useContext } from "react";
 import { useLocation } from "react-router-dom";
 import { FormWrapper } from "./SongForm.styles";
 
@@ -10,9 +10,10 @@ import Alert from "../Alert/Alert";
 
 import ChordsInput from "../ChordsInput";
 import TonesInput from "../TonesInput";
-
+//Types
 import { SongsType } from "../SongSearch/SongSearch";
-
+//Context
+import SelectedInputContext from "../../Context/inputSelectedContext";
 export type InitialValues = {
   name: string;
   chords: string[];
@@ -38,6 +39,9 @@ const SongForm: React.FC = () => {
 
   const inputRef = useRef<HTMLInputElement>(null);
   const location = useLocation();
+
+  const { selectedInput, handleSelectedInput } =
+    useContext(SelectedInputContext);
 
   //Aqui se enviaran los datos al db
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -135,16 +139,28 @@ const SongForm: React.FC = () => {
     });
   };
 
+  useEffect(() => {
+    inputRef.current!.addEventListener("click", (e) => {
+      handleSelectedInput(inputRef.current!.name);
+    });
+  }, [handleSelectedInput, selectedInput]);
+
   return (
     <FormWrapper>
-      {/* <section>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo at
-          aperiam aliquam culpa, beatae molestias facere inventore consequatur
-          architecto ex iste doloremque illum quas est itaque perspiciatis harum
-          suscipit ducimus!
+      <section>
+        <p style={selectedInput === "name" ? { opacity: 1 } : { opacity: 0.5 }}>
+          Ingresa el nombre de la canción.
         </p>
-      </section> */}
+        <p
+          style={
+            selectedInput === "chords" || selectedInput === "tones"
+              ? { opacity: 1 }
+              : { opacity: 0.5 }
+          }
+        >
+          Separa por coma (,) cada tono o acorde para agregar.
+        </p>
+      </section>
       <form onSubmit={handleSubmit}>
         <input
           type="text"

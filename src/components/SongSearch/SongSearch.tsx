@@ -24,7 +24,7 @@ import { MyOption, options, styles } from "../../helpers/reactSelectOptions";
 
 //Components
 import SongDetails from "../SongDetails";
-import { resultsDropdown } from "../../helpers/handleResultDropdown";
+// import { resultsDropdown } from "../../helpers/handleResultDropdown";
 import { SearchWrapper } from "./SongSearch.styles";
 
 //Loader
@@ -50,13 +50,13 @@ const SongSearch: React.FC = () => {
   const [filterBy, setFilterBy] = useState<string>("all");
   const [matches, setMatches] = useState<SongsType>([]);
   const [inputResults, setInputResults] = useState<string[]>([]);
-  const [formIsSubmited, setFormIsSubmited] = useState<boolean>(false);
+  const [, setFormIsSubmited] = useState<boolean>(false);
 
   const location = useLocation();
 
   const inputRef = useRef<HTMLInputElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
-  const searchResultsRef = useRef<HTMLDivElement>(null);
+  // const searchResultsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -142,18 +142,11 @@ const SongSearch: React.FC = () => {
   };
 
   useEffect(() => {
-    //Handling close the search matches bar
-    document.addEventListener("click", (e) => {
-      e.target !== searchResultsRef.current ?? inputRef.current
-        ? setFormIsSubmited(true)
-        : setFormIsSubmited(false);
-    });
-
     //Detect the route to focus input
     if (location.pathname === "/") inputRef.current?.focus();
 
     //handle scroll for the dropdown for search results
-    resultsDropdown(search, searchResultsRef);
+    // resultsDropdown(search, searchResultsRef);
   }, [location, search]);
 
   const handleSearchBar = (inputResult: string) => {
@@ -190,20 +183,6 @@ const SongSearch: React.FC = () => {
             <FaSearch />
           </button>
         </div>
-        {/* <div className="search-matches-input" ref={searchResultsRef}>
-          {search ? (
-            formIsSubmited ? null : (
-              <ul>
-                {inputResults.map((inputResult, idx) => (
-                  <li key={idx} onClick={() => handleSearchBar(inputResult)}>
-                    {inputResult}
-                  </li>
-                ))}
-              </ul>
-            )
-          ) : null}
-        </div> */}
-
         <SearchMatches
           searchMatchesResults={inputResults}
           inputRef={inputRef}

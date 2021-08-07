@@ -104,6 +104,10 @@ export const SearchWrapper = styled.div`
   }
 
   @media (max-width: 768px) {
+    section p {
+      padding: 0;
+      font-size: 1.5rem;
+    }
     section p,
     form {
       width: 80%;
