@@ -10,8 +10,8 @@ export const GlobalStyles = createGlobalStyle`
         --btnBgColor: #3D444B;
         --btnBorder:  #66339980;
         --btnBorderDark:  #663399;
-        --error: #f21d2b;
-        --success: #1DF27A;
+        --error: #bd0813;
+        --success: #059644;
     }
 
     html {

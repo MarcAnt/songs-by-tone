@@ -95,8 +95,6 @@ const ChordsInput: React.FC<Props> = ({
   };
 
   const handleSeachBar = (inputValue: string) => {
-    console.log(inputValue);
-
     setInputValue(inputValue);
   };
 
@@ -104,10 +102,6 @@ const ChordsInput: React.FC<Props> = ({
     if (chordsInputRegx.test(inputValue)) {
       setInputValue((prev) => prev.slice(0, -1));
     }
-
-    // return () => {
-    //   setInputValue("");
-    // };
   }, [inputValue]);
 
   useEffect(() => {
@@ -115,11 +109,6 @@ const ChordsInput: React.FC<Props> = ({
       setChords([]);
       setFormIsSubmited(false);
     }
-
-    // return () => {
-    //   setChords([]);
-    //   setFormIsSubmited(false);
-    // };
   }, [formIsSubmited, setFormIsSubmited]);
 
   useEffect(() => {

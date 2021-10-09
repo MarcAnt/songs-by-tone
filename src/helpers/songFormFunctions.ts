@@ -3,6 +3,7 @@ import { chordsInputRegx, tonesInputRegx } from "./regularExp";
 import { listOfTonesAndChords } from "./tonesChordsList";
 import { toneList } from "./tonesList";
 
+//Obtener el acorde segun el tono
 export const getChordsByTone = (tone: string): string[] => {
   let newTone = tone.split("");
 
@@ -25,20 +26,14 @@ export const getChordsByTone = (tone: string): string[] => {
 
   return result;
 };
-
+//Obtener el tono
 export const getTone = (tone: string): string[] => {
   let newTone = tone.split("");
   if (tonesInputRegx.test(newTone.join("").slice(0, 1))) return [];
-
-  // const keysTones = Object.keys(listOfTonesAndChords);
-
-  // return keysTones.filter((keysTone) => keysTone.includes(tone));
-
   const tonesMatch = toneList.filter((toneList) => toneList.includes(tone));
-
   return tonesMatch;
 };
-
+//Obtener solo el nombre de las canciones
 export const getSongName = (songs: SongsType, songName: string) => {
   if (songName === "") return;
 

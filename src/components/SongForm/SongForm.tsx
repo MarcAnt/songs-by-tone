@@ -14,6 +14,7 @@ import TonesInput from "../TonesInput";
 import { SongsType } from "../SongSearch/SongSearch";
 //Context
 import SelectedInputContext from "../../Context/inputSelectedContext";
+
 export type InitialValues = {
   name: string;
   chords: string[];
@@ -31,10 +32,10 @@ const SongForm: React.FC = () => {
   const [formIsSubmited, setFormIsSubmited] = useState(false);
 
   const [songs, setSongs] = useState<SongsType>([]);
+  const [error, setError] = useState(false);
 
   const [alertIsOpen, setAlertIsOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
-  const [error, setError] = useState(false);
   const [openSuccess, setOpenSuccess] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -43,65 +44,18 @@ const SongForm: React.FC = () => {
   const { selectedInput, handleSelectedInput } =
     useContext(SelectedInputContext);
 
-  //Aqui se enviaran los datos al db
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (form.name === "" || form.tones.length <= 0 || form.chords.length <= 0) {
-      inputRef.current!.focus();
-      setForm({
-        ...form,
-        [e.currentTarget.name]: e.currentTarget.value,
-      });
-      setFormIsSubmited(false);
-      setAlertIsOpen(false);
-      setAlertMessage(ALERT_MESSAGES.emptyForm);
-      setOpenSuccess(false);
-      setError(true);
-    } else {
-      if (form.name.length <= 3) {
-        inputRef.current!.focus();
-
-        setAlertMessage(ALERT_MESSAGES.minLength);
-        setAlertIsOpen(false);
-        setError(true);
-      } else {
-        setForm({
-          ...form,
-          [e.currentTarget.name]: e.currentTarget.value,
-        });
-
-        let songName = getSongName(songs, form.name);
-        console.log(songName);
-        if (songName) {
-          setAlertMessage(ALERT_MESSAGES.similarName);
-          setAlertIsOpen(false);
-          setError(true);
-        } else {
-          // createData(form);
-          setForm(initialValues);
-          setFormIsSubmited(true);
-          setError(false);
-          setAlertIsOpen(false);
-          setAlertMessage(ALERT_MESSAGES.submitedForm);
-          setOpenSuccess(true);
-        }
-      }
-    }
-
-    e.currentTarget.reset();
-  };
-
   useEffect(() => {
     if (form.name === "") return;
     const abortController = new AbortController();
     const signal = abortController.signal;
-    try {
-      getData(signal).then((songs) => setSongs(songs));
-    } catch (error) {
-      setError(true);
-      console.log(error);
-    }
+
+    getData(signal)
+      .then((songs) => {
+        setSongs(songs);
+        console.log("obtenidos");
+      })
+      .catch(() => setSongs([]));
+
     return () => {
       abortController.abort();
     };
@@ -119,6 +73,70 @@ const SongForm: React.FC = () => {
     };
   }, [location, formIsSubmited]);
 
+  //Aqui se enviaran los datos al db
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (form.name === "" || form.tones.length <= 0 || form.chords.length <= 0) {
+      inputRef.current!.focus();
+      setForm({
+        ...form,
+        [e.currentTarget.name]: e.currentTarget.value,
+      });
+      setError(true);
+      setAlertIsOpen(false);
+      setAlertMessage(ALERT_MESSAGES.emptyForm);
+      setFormIsSubmited(false);
+      console.log("vacios");
+      return;
+    } else {
+      if (form.name.length <= 3) {
+        inputRef.current!.focus();
+        setFormIsSubmited(false);
+        setError(true);
+        setAlertIsOpen(false);
+        setAlertMessage(ALERT_MESSAGES.minLength);
+        console.log("Error en menos de 3 caracteres");
+      } else {
+        setForm({
+          ...form,
+          [e.currentTarget.name]: e.currentTarget.value,
+        });
+
+        let songName = songs ? getSongName(songs, form.name) : undefined;
+
+        if (songName) {
+          setError(true);
+          setAlertIsOpen(false);
+          setFormIsSubmited(false);
+          setAlertMessage(ALERT_MESSAGES.similarName);
+          console.log("error en el nombre repetido");
+        } else {
+          createData(form)
+            .then(() => {
+              console.log("creado");
+              setError(false);
+              setFormIsSubmited(true);
+              setAlertIsOpen(false);
+              setOpenSuccess(true);
+              setAlertMessage(ALERT_MESSAGES.submitedForm);
+            })
+            .catch(() => {
+              console.log(" no creado");
+              setError(true);
+              setFormIsSubmited(false);
+              setAlertIsOpen(false);
+              setAlertMessage(ALERT_MESSAGES.noConnection);
+            });
+
+          console.log(error, formIsSubmited, form);
+        }
+      }
+    }
+
+    e.currentTarget.reset();
+  };
+
   //Aqui se obtienen los datos del form
   const handleChange = (e: FormEvent<HTMLInputElement>) => {
     if (e.currentTarget.name === "name") {
@@ -126,6 +144,8 @@ const SongForm: React.FC = () => {
 
       if (e.currentTarget.value.length >= 50) {
         setError(true);
+        setFormIsSubmited(false);
+        setAlertIsOpen(false);
         setAlertMessage(ALERT_MESSAGES.maxLength);
         return;
       } else {

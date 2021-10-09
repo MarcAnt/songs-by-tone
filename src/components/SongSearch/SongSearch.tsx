@@ -12,24 +12,24 @@ import { FaSearch } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 
 //Helpers
-import {
-  filterTones,
-  filterChords,
-  filterResultBar,
-  filterOnSubmit,
-} from "../../helpers/songSearchFunctions";
-import { getData } from "../../helpers/Api";
+
+import { getFilterBy, getTonesAndChords } from "../../helpers/Api";
 import { songSearchRegx } from "../../helpers/regularExp";
 import { MyOption, options, styles } from "../../helpers/reactSelectOptions";
 
 //Components
 import SongDetails from "../SongDetails";
-// import { resultsDropdown } from "../../helpers/handleResultDropdown";
 import { SearchWrapper } from "./SongSearch.styles";
 
 //Loader
 import Loader from "../Loader/Loader";
 import SearchMatches from "../SearchMatches/SearchMatches";
+import useNearScreen from "../../Hooks/useNearScreen";
+import {
+  filterChords,
+  filterResultBar,
+  filterTones,
+} from "../../helpers/songSearchFunctions";
 //Types
 export type SongsType = {
   id: number;
@@ -37,8 +37,6 @@ export type SongsType = {
   chords: string[];
   tones: string[];
 }[];
-
-const filter_default = "all";
 
 const SongSearch: React.FC = () => {
   const [search, setSearch] = useState<string>("");
@@ -50,42 +48,79 @@ const SongSearch: React.FC = () => {
   const [filterBy, setFilterBy] = useState<string>("all");
   const [matches, setMatches] = useState<SongsType>([]);
   const [inputResults, setInputResults] = useState<string[]>([]);
-  const [, setFormIsSubmited] = useState<boolean>(false);
+  const [formIsSubmited, setFormIsSubmited] = useState<boolean>(false);
 
   const location = useLocation();
 
   const inputRef = useRef<HTMLInputElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
-  // const searchResultsRef = useRef<HTMLDivElement>(null);
+  const visorRef = useRef<HTMLDivElement>(null);
 
+  const [counter, setCounter] = useState(1);
+
+  const { isNearScreen, setShow } = useNearScreen({
+    distance: "0",
+    externalRef: visorRef,
+  });
+
+  //Detect the route and focus on main input | crear focus en el input al estar en la ruta
   useEffect(() => {
-    const abortController = new AbortController();
-    const signal = abortController.signal;
+    if (location.pathname === "/") inputRef.current?.focus();
+  }, [location, search]);
 
-    if (search === "") return;
+  //Peticion para la busquedas
+  useEffect(() => {
+    if (!formIsSubmited) return;
+    setLoading(true);
     try {
-      getData(signal)
-        .then((songs) => {
-          setLoading(false);
-          setSongs(songs);
-        })
-        .catch((error) => {
-          setLoading(true);
-          setError(error);
-        });
+      setError(false);
+      getFilterBy(filterBy, search, counter).then((sgns) => {
+        setSongs((prev) => [...prev, ...sgns]);
+        setLoading(false);
+      });
     } catch (error) {
+      console.log(error);
       setError(true);
     }
-    return () => {
-      setSongs([]);
-      abortController.abort();
-    };
+  }, [search, filterBy, counter, formIsSubmited]);
+
+  //Controlar para el scroll infinito
+  useEffect(() => {
+    if (isNearScreen) {
+      setCounter((prev) => prev + 1);
+    }
+  }, [isNearScreen, formIsSubmited]);
+
+  //Busqueda para la barra de resultados
+  useEffect(() => {
+    try {
+      getTonesAndChords(search)
+        .then((songs) => setMatches(songs))
+        .catch((error) => console.log(error));
+    } catch (error) {
+      console.log(error);
+    }
   }, [search]);
 
+  useEffect(() => {
+    let results: string[];
+
+    results = filterResultBar(
+      filterChords(matches, search),
+      filterTones(matches, search),
+      search
+    )[filterBy];
+    results && setInputResults(results);
+  }, [filterBy, matches, search]);
+
+  //Selected filter | filtro seleccionado
   const handleSelectFilter = (e: MyOption | null) => {
     setFilterBy(e!.value);
+    setCounter(1);
+    setSongs([]);
   };
 
+  //Submit
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!search) {
@@ -94,43 +129,19 @@ const SongSearch: React.FC = () => {
       return;
     }
     setFormIsSubmited(true);
+    //Si el formulario no ha sido enviado, no se borran los valores
+    if (!formIsSubmited) {
+      setShow(false);
+      setCounter(1);
+      setSongs([]);
+    }
     e.currentTarget.reset();
-
-    return filterOnSubmit(
-      setMatches,
-      filterChords(songs, search),
-      filterTones(songs, search)
-    )[filterBy]
-      ? filterOnSubmit(
-          setMatches,
-          filterChords(songs, search),
-          filterTones(songs, search)
-        )[filterBy]()
-      : filter_default;
   };
 
-  useEffect(() => {
-    //Filter in result matches
-    let results: string[];
-    if (search) {
-      results = filterResultBar(
-        filterChords(songs, search),
-        filterTones(songs, search),
-        search
-      )[filterBy];
-      results && setInputResults(results);
-    }
-
-    return () => {
-      results = [];
-      setInputResults([]);
-    };
-  }, [search, songs, filterBy]);
-
+  //Set search term
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     let currentValue = e.currentTarget.value;
     setFormIsSubmited(false);
-
     if (songSearchRegx.test(currentValue)) {
       e.currentTarget.value = "";
       currentValue = "";
@@ -140,15 +151,7 @@ const SongSearch: React.FC = () => {
       setSearch(currentValue);
     }
   };
-
-  useEffect(() => {
-    //Detect the route to focus input
-    if (location.pathname === "/") inputRef.current?.focus();
-
-    //handle scroll for the dropdown for search results
-    // resultsDropdown(search, searchResultsRef);
-  }, [location, search]);
-
+  //Set search term clicked in search bar
   const handleSearchBar = (inputResult: string) => {
     setSearch(inputResult);
   };
@@ -193,7 +196,12 @@ const SongSearch: React.FC = () => {
           top="5.55rem"
         />
       </form>
-      {loading ? <Loader /> : <SongDetails matches={matches} />}
+
+      {loading ? (
+        <Loader />
+      ) : (
+        <SongDetails matches={songs} scrollInfiniteRef={visorRef} />
+      )}
     </SearchWrapper>
   );
 };

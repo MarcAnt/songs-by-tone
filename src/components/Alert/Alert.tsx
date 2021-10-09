@@ -26,7 +26,7 @@ const Alert: React.FC<typeAlerts> = ({
     if (!alertIsOpen) {
       setTimeout(() => {
         setAlertIsOpen(true);
-      }, 3000);
+      }, 4500);
     }
   }, [setAlertIsOpen, alertIsOpen]);
 

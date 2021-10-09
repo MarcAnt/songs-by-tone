@@ -2,7 +2,13 @@ import { SongsType } from "../SongSearch/SongSearch";
 import SongCard from "../SongCard/SongCard";
 import { CardGrid } from "./SongTable.styles";
 
-const SongTable = ({ matches }: { matches: SongsType }) => {
+const SongTable = ({
+  matches,
+  scrollInfiniteRef,
+}: {
+  matches: SongsType;
+  scrollInfiniteRef: React.RefObject<HTMLDivElement>;
+}) => {
   return (
     <CardGrid>
       {matches.length > 0 &&
@@ -14,6 +20,8 @@ const SongTable = ({ matches }: { matches: SongsType }) => {
             tones={match.tones}
           />
         ))}
+      {matches.length > 10 && <div ref={scrollInfiniteRef}></div>}
+      {/* <div ref={scrollInfiniteRef}></div> */}
     </CardGrid>
   );
 };
