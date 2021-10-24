@@ -10,11 +10,13 @@ import { ALERT_MESSAGES } from "../helpers/alertMessages";
 import { tonesInputRegx, separadoresRegx } from "../helpers/regularExp";
 import { getTone } from "../helpers/songFormFunctions";
 import Alert from "./Alert/Alert";
+import { Input } from "@chakra-ui/input";
+import { FormControl, FormLabel } from "@chakra-ui/form-control";
 
-import { InitialValues } from "./SongForm/SongForm";
+import { InitialValues } from "@components/SongForm/SongForm";
+
+import SelectedInputContext from "../context/inputSelectedContext";
 import SearchMatches from "./SearchMatches/SearchMatches";
-
-import SelectedInputContext from "../Context/inputSelectedContext";
 
 type Props = {
   form: InitialValues;
@@ -25,7 +27,7 @@ type Props = {
   setFormIsSubmited: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const TonesInput: React.FC<Props> = ({
+export const TonesInput: React.FC<Props> = ({
   setForm,
   form,
   formIsSubmited,
@@ -115,31 +117,35 @@ const TonesInput: React.FC<Props> = ({
   return (
     <>
       <div className="formControl">
-        <span>Tonalidades:</span>
-        <span>
-          {tones
-            ? formIsSubmited
-              ? null
-              : tones.map((chord, idx) => (
-                  <button type="button" key={idx} onClick={deleteTones}>
-                    {chord}
-                    <span style={{ paddingLeft: "0.1rem", fontSize: ".65rem" }}>
-                      X
-                    </span>
-                  </button>
-                ))
-            : null}
-        </span>
-        <input
-          type="text"
-          name={name}
-          value={inputValue}
-          placeholder={placeholder}
-          onChange={handleInput}
-          autoComplete="off"
-          ref={inputRef}
-          disabled={tones.length >= 3 ? true : false}
-        />
+        <FormControl>
+          <FormLabel>Tonalidades:</FormLabel>
+          <span>
+            {tones
+              ? formIsSubmited
+                ? null
+                : tones.map((chord, idx) => (
+                    <button type="button" key={idx} onClick={deleteTones}>
+                      {chord}
+                      <span
+                        style={{ paddingLeft: "0.1rem", fontSize: ".65rem" }}
+                      >
+                        X
+                      </span>
+                    </button>
+                  ))
+              : null}
+          </span>
+          <Input
+            type="text"
+            name={name}
+            value={inputValue}
+            placeholder={placeholder}
+            onChange={handleInput}
+            autoComplete="off"
+            ref={inputRef}
+            disabled={tones.length >= 3 ? true : false}
+          />
+        </FormControl>
 
         <SearchMatches
           searchMatchesResults={getTone(inputValue)}
@@ -164,5 +170,3 @@ const TonesInput: React.FC<Props> = ({
     </>
   );
 };
-
-export default TonesInput;

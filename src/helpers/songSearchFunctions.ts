@@ -1,4 +1,4 @@
-import { SongsType } from "../components/SongSearch/SongSearch";
+import { SongsType } from "@components/SongSearch/SongSearch";
 
 /**
  * Obtener todos los acordes filtrados

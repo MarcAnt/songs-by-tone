@@ -1,19 +1,21 @@
 import { FormEvent, useState, useRef, useEffect, useContext } from "react";
 import { useLocation } from "react-router-dom";
-import { FormWrapper } from "./SongForm.styles";
+// import { FormWrapper } from "./SongForm.styles";
 
-import { ALERT_MESSAGES } from "../../helpers/alertMessages";
-import { createData, getData } from "../../helpers/Api";
-import { getSongName } from "../../helpers/songFormFunctions";
+import { Box, Flex, Text } from "@chakra-ui/layout";
+import { FormControl } from "@chakra-ui/form-control";
+import { Input } from "@chakra-ui/input";
 
-import Alert from "../Alert/Alert";
-
-import ChordsInput from "../ChordsInput";
-import TonesInput from "../TonesInput";
+import { ChordsInput } from "@components/ChordsInput";
+import { TonesInput } from "@components/TonesInput";
 //Types
-import { SongsType } from "../SongSearch/SongSearch";
 //Context
-import SelectedInputContext from "../../Context/inputSelectedContext";
+import SelectedInputContext from "@context/inputSelectedContext";
+import { createData, getData } from "@helpers/Api";
+import { ALERT_MESSAGES } from "@helpers/alertMessages";
+import { getSongName } from "@helpers/songFormFunctions";
+import { SongsType } from "@components/SongSearch/SongSearch";
+import Alert from "../Alert/Alert";
 
 export type InitialValues = {
   name: string;
@@ -27,7 +29,7 @@ export const initialValues: InitialValues = {
   tones: [],
 };
 
-const SongForm: React.FC = () => {
+export const SongForm: React.FC = () => {
   const [form, setForm] = useState(initialValues);
   const [formIsSubmited, setFormIsSubmited] = useState(false);
 
@@ -166,12 +168,15 @@ const SongForm: React.FC = () => {
   }, [handleSelectedInput, selectedInput]);
 
   return (
-    <FormWrapper>
-      <section>
-        <p style={selectedInput === "name" ? { opacity: 1 } : { opacity: 0.5 }}>
+    // <FormWrapper>
+    <Flex justifyContent="center" alignContent="center" h="80vh">
+      <Box as="section" flexBasis="50%">
+        <Text
+          style={selectedInput === "name" ? { opacity: 1 } : { opacity: 0.5 }}
+        >
           Ingresa el nombre de la canción.
-        </p>
-        <p
+        </Text>
+        <Text
           style={
             selectedInput === "chords" || selectedInput === "tones"
               ? { opacity: 1 }
@@ -179,39 +184,43 @@ const SongForm: React.FC = () => {
           }
         >
           Separa por coma (,) cada tono o acorde para agregar.
-        </p>
-      </section>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="name"
-          value={form.name}
-          placeholder="Nombre del tema o cancion"
-          onChange={handleChange}
-          ref={inputRef}
-          maxLength={50}
-          autoComplete="off"
-        />
-        <div className="inputsContainer">
-          <TonesInput
-            name="tones"
-            placeholder="C, E, Bb"
-            form={form}
-            setForm={setForm}
-            formIsSubmited={formIsSubmited}
-            setFormIsSubmited={setFormIsSubmited}
-          />
-          <ChordsInput
-            name="chords"
-            placeholder="C, A7, Gm6"
-            form={form}
-            setForm={setForm}
-            formIsSubmited={formIsSubmited}
-            setFormIsSubmited={setFormIsSubmited}
-          />
-        </div>
-        <input type="submit" value="Crear" />
-      </form>
+        </Text>
+      </Box>
+      <Box>
+        <form onSubmit={handleSubmit}>
+          <FormControl>
+            <Input
+              type="text"
+              name="name"
+              value={form.name}
+              placeholder="Nombre del tema o cancion"
+              onChange={handleChange}
+              ref={inputRef}
+              maxLength={50}
+              autoComplete="off"
+            />
+          </FormControl>
+          <Box className="inputsContainer">
+            <TonesInput
+              name="tones"
+              placeholder="C, E, Bb"
+              form={form}
+              setForm={setForm}
+              formIsSubmited={formIsSubmited}
+              setFormIsSubmited={setFormIsSubmited}
+            />
+            <ChordsInput
+              name="chords"
+              placeholder="C, A7, Gm6"
+              form={form}
+              setForm={setForm}
+              formIsSubmited={formIsSubmited}
+              setFormIsSubmited={setFormIsSubmited}
+            />
+          </Box>
+          <input type="submit" value="Crear" />
+        </form>
+      </Box>
       {openSuccess && (
         <Alert
           width="300px"
@@ -237,8 +246,7 @@ const SongForm: React.FC = () => {
           alertIsOpen={alertIsOpen}
         />
       ) : null}
-    </FormWrapper>
+      {/* </FormWrapper> */}
+    </Flex>
   );
 };
-
-export default SongForm;

@@ -6,15 +6,17 @@ import React, {
   MouseEvent,
   useContext,
 } from "react";
-import { InitialValues } from "./SongForm/SongForm";
+import { Input } from "@chakra-ui/input";
+import { FormControl, FormLabel } from "@chakra-ui/form-control";
+import { InitialValues } from "@components/SongForm/SongForm";
 //components
 import Alert from "./Alert/Alert";
-import SearchMatches from "./SearchMatches/SearchMatches";
+import SearchMatches from "@components/SearchMatches/SearchMatches";
 //helpers
-import { ALERT_MESSAGES } from "../helpers/alertMessages";
-import { chordsInputRegx, separadoresRegx } from "../helpers/regularExp";
-import { getChordsByTone } from "../helpers/songFormFunctions";
-import SelectedInputContext from "../Context/inputSelectedContext";
+import { ALERT_MESSAGES } from "@helpers/alertMessages";
+import { chordsInputRegx, separadoresRegx } from "@helpers/regularExp";
+import { getChordsByTone } from "@helpers/songFormFunctions";
+import SelectedInputContext from "@context/inputSelectedContext";
 
 type Props = {
   form: InitialValues;
@@ -25,7 +27,7 @@ type Props = {
   setFormIsSubmited: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const ChordsInput: React.FC<Props> = ({
+export const ChordsInput: React.FC<Props> = ({
   setForm,
   form,
   formIsSubmited,
@@ -119,29 +121,31 @@ const ChordsInput: React.FC<Props> = ({
   return (
     <>
       <div className="formControl">
-        <span style={{ padding: 0 }}>Acordes:</span>
-        <span>
-          {formIsSubmited
-            ? null
-            : chords.map((chord, idx) => (
-                <button type="button" key={idx} onClick={deleteChords}>
-                  {chord}
-                  <span style={{ paddingLeft: "0.1rem", fontSize: ".65rem" }}>
-                    X
-                  </span>
-                </button>
-              ))}
-        </span>
-        <input
-          type="text"
-          name={name}
-          value={inputValue}
-          placeholder={placeholder}
-          onChange={handleInput}
-          autoComplete="off"
-          ref={inputRef}
-          disabled={chords.length >= 5 ? true : false}
-        />
+        <FormControl>
+          <FormLabel style={{ padding: 0 }}>Acordes:</FormLabel>
+          <span>
+            {formIsSubmited
+              ? null
+              : chords.map((chord, idx) => (
+                  <button type="button" key={idx} onClick={deleteChords}>
+                    {chord}
+                    <span style={{ paddingLeft: "0.1rem", fontSize: ".65rem" }}>
+                      X
+                    </span>
+                  </button>
+                ))}
+          </span>
+          <Input
+            type="text"
+            name={name}
+            value={inputValue}
+            placeholder={placeholder}
+            onChange={handleInput}
+            autoComplete="off"
+            ref={inputRef}
+            disabled={chords.length >= 5 ? true : false}
+          />
+        </FormControl>
         <SearchMatches
           searchMatchesResults={getChordsByTone(inputValue)}
           inputRef={inputRef}
@@ -165,5 +169,3 @@ const ChordsInput: React.FC<Props> = ({
     </>
   );
 };
-
-export default ChordsInput;

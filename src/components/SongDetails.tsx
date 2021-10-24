@@ -1,5 +1,5 @@
-import { SongsType } from "./SongSearch/SongSearch";
-import SongTable from "./SongTable/SongTable";
+import { SongsType } from "@components/SongSearch/SongSearch";
+import SongTable from "@components/SongTable/SongTable";
 
 const SongDetails = ({
   matches,

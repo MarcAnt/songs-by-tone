@@ -1,7 +1,8 @@
-import { HeaderWrapper } from "./Header.style";
 import { Link, useLocation } from "react-router-dom";
 
-const Header = () => {
+import { HeaderWrapper } from "./Header.style";
+
+export const Header = (): JSX.Element => {
   let location = useLocation();
 
   return (
@@ -22,5 +23,3 @@ const Header = () => {
     </HeaderWrapper>
   );
 };
-
-export default Header;

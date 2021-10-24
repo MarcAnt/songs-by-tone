@@ -1,16 +1,15 @@
 import React from "react";
 import { HashRouter } from "react-router-dom";
-import { GlobalStyles } from "./GlobalStyles";
+import { Footer } from "@components/Footer/Footer";
+import { Header } from "@components/Header/Header";
 
-import Footer from "./components/Footer/Footer";
-import Header from "./components/Header/Header";
-
-import Home from "./Pages/Home";
+// import { GlobalStyles } from "./GlobalStyles";
+import Home from "@pages/Home";
 
 const App: React.FC = () => {
   return (
     <>
-      <GlobalStyles />
+      {/* <GlobalStyles /> */}
       <HashRouter>
         <div className="site-wrapper">
           <Header />

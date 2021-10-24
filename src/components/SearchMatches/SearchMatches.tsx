@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
-import { resultsDropdown } from "../../helpers/handleResultDropdown";
-import useHandleSearchResults from "../../Hooks/useHandleSearchResults";
+import { resultsDropdown } from "@helpers/handleResultDropdown";
+import useHandleSearchResults from "@hooks/useHandleSearchResults";
 import { SearchMatchesWrapper } from "./SearchMatches.styles";
 
 type Props = {

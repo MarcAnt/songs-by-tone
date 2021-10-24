@@ -13,23 +13,24 @@ import { useLocation } from "react-router-dom";
 
 //Helpers
 
-import { getFilterBy, getTonesAndChords } from "../../helpers/Api";
-import { songSearchRegx } from "../../helpers/regularExp";
-import { MyOption, options, styles } from "../../helpers/reactSelectOptions";
+import { songSearchRegx } from "@helpers/regularExp";
+import { MyOption, options, styles } from "@helpers/reactSelectOptions";
 
 //Components
-import SongDetails from "../SongDetails";
+import SongDetails from "@components/SongDetails";
 import { SearchWrapper } from "./SongSearch.styles";
 
 //Loader
 import Loader from "../Loader/Loader";
-import SearchMatches from "../SearchMatches/SearchMatches";
-import useNearScreen from "../../Hooks/useNearScreen";
+import SearchMatches from "@components/SearchMatches/SearchMatches";
+import useNearScreen from "@hooks/useNearScreen";
 import {
   filterChords,
   filterResultBar,
   filterTones,
-} from "../../helpers/songSearchFunctions";
+} from "@helpers/songSearchFunctions";
+import { getFilterBy, getTonesAndChords } from "@helpers/Api";
+
 //Types
 export type SongsType = {
   id: number;
@@ -38,7 +39,7 @@ export type SongsType = {
   tones: string[];
 }[];
 
-const SongSearch: React.FC = () => {
+export const SongSearch: React.FC = () => {
   const [search, setSearch] = useState<string>("");
   const [songs, setSongs] = useState<SongsType>([]);
 
@@ -205,5 +206,3 @@ const SongSearch: React.FC = () => {
     </SearchWrapper>
   );
 };
-
-export default SongSearch;

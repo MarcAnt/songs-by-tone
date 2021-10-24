@@ -1,10 +1,11 @@
 import { Route, Switch } from "react-router-dom";
-import SongForm from "../components/SongForm/SongForm";
-import SongSearch from "../components/SongSearch/SongSearch";
-import { SelectedInputProvider } from "../Context/inputSelectedContext";
-import Error404 from "../Pages/Error404";
+import { SelectedInputProvider } from "@context/inputSelectedContext";
+import { SongForm } from "@components/SongForm/SongForm";
+import { SongSearch } from "@components/SongSearch/SongSearch";
 
-const Home = () => {
+import Error404 from "@pages/Error404";
+
+const Home = (): JSX.Element => {
   return (
     <main>
       <SelectedInputProvider>

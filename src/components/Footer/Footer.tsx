@@ -1,8 +1,6 @@
-// const today = new Date();
-// const YEAR = today.getFullYear();
 import { FaGithub } from "react-icons/fa";
 import { FooterWrapper } from "./Footer.style";
-const Footer: React.FC = () => {
+export const Footer = (): JSX.Element => {
   return (
     <FooterWrapper>
       <p>
@@ -24,4 +22,3 @@ const Footer: React.FC = () => {
     </FooterWrapper>
   );
 };
-export default Footer;

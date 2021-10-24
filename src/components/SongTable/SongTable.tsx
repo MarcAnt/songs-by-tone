@@ -1,5 +1,5 @@
-import { SongsType } from "../SongSearch/SongSearch";
-import SongCard from "../SongCard/SongCard";
+import { SongsType } from "@components/SongSearch/SongSearch";
+import SongCard from "@components/SongCard/SongCard";
 import { CardGrid } from "./SongTable.styles";
 
 const SongTable = ({
